@@ -3,7 +3,11 @@
     "description": "Complete dashboard with automatic menu discovary based on user's roles and permission the system is also integrated with charts and datatables",
     "type": "library",
     "require": {
-        "laravel/ui": "^4.0"
+        "laravel/ui": "^4.0",
+        "consoletvs/charts": "^6.6",
+        "doctrine/dbal": "^3.6",
+        "laravel/octane": "^1.4",
+        "yajra/laravel-datatables": "^9.0"
     },
     "license": "MIT",
     "autoload": {

@@ -49,13 +49,6 @@ class DashboardInstallCommand extends Command
      */
     public function handle()
     {
-        //$this->requireComposerPackages('laravel/ui:^4.0');
-        $this->requireComposerPackages('laravel/octane');
-        $this->requireComposerPackages('yajra/laravel-datatables:^9.0');
-        $this->requireComposerPackages('consoletvs/charts');
-        $this->requireComposerPackages('doctrine/dbal');
-        
-
             file_put_contents(
                 base_path('routes/web.php'),
                 file_get_contents(__DIR__ . '/../../routes/web.php'),
