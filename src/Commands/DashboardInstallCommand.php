@@ -49,7 +49,7 @@ class DashboardInstallCommand extends Command
      */
     public function handle()
     {
-        $this->requireComposerPackages('laravel/ui:^4.0');
+        //$this->requireComposerPackages('laravel/ui:^4.0');
         $this->requireComposerPackages('laravel/octane');
         $this->requireComposerPackages('yajra/laravel-datatables:^9.0');
         $this->requireComposerPackages('consoletvs/charts');

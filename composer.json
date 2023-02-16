@@ -3,6 +3,7 @@
     "description": "Complete dashboard with automatic menu discovary based on user's roles and permission the system is also integrated with charts and datatables",
     "type": "library",
     "require": {
+        "laravel/ui": "^4.0"
     },
     "license": "MIT",
     "autoload": {
