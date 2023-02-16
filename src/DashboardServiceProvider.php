@@ -22,7 +22,7 @@ class DashboardServiceProvider extends ServiceProvider
 
     public function boot()
     {
-        $this->loadMigrationsFrom(__DIR__.'/../database/migrations/migrations');
+        $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
         //Routes Load
         //$this->loadRoutesFrom(__DIR__.'/../routes/web.php');
         //Load Views
