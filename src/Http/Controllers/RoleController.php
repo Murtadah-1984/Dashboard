@@ -6,16 +6,24 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Models\Role;
+use App\Models\Permission;
 
 class RoleController extends Controller
 {
+     /**
+     * Create the controller instance.
+     */
+    public function __construct()
+    {
+        $this->authorizeResource(Role::class, 'role');
+    }
     /**
      * Display a listing of the resource.
      */
     public function index(): Response
     {
-        $users = Role::paginate();
-        return view('users.index', compact('users'));
+        $roles = Role::with(['permissions'])->get();
+        return view('users.roles.index', compact('roles'));
     }
 
     /**
@@ -23,7 +31,8 @@ class RoleController extends Controller
      */
     public function create(): Response
     {
-        //
+        $permissions = Permission::pluck('key', 'id');
+        return view('users.roles.create', compact('permissions'));
     }
 
     /**
@@ -31,39 +40,53 @@ class RoleController extends Controller
      */
     public function store(Request $request): RedirectResponse
     {
-        //
+        $role = Role::create($request->all());
+        $role->permissions()->sync($request->input('permissions', []));
+
+        return redirect()->route('users.roles.index');
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id): Response
+    public function show(Role $role): Response
     {
-        //
+        $role->load('permissios');
+
+        return view('users.roles.show', compact('permissions'));
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id): Response
+    public function edit(Role $role): Response
     {
-        //
+        $permissionns = Permission::pluck('key', 'id');
+
+        $role->load('permissios');
+
+        return view('users.roles.edit', compact('role', 'permissions'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id): RedirectResponse
+    public function update(Request $request, Role $role): RedirectResponse
     {
-        //
+        $role->update($request->all());
+        $role->permissions()->sync($request->input('permissions', []));
+
+        return redirect()->route('users.roles.index');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id): RedirectResponse
+    public function destroy(Role $role): RedirectResponse
     {
-        //
+        $role->delete();
+
+        return back();
     }
 }
 

@@ -9,12 +9,19 @@ use App\Models\User;
 
 class UsersController extends Controller
 {
+     /**
+     * Create the controller instance.
+     */
+    public function __construct()
+    {
+        $this->authorizeResource(User::class, 'user');
+    }
     /**
      * Display a listing of the resource.
      */
     public function index(): Response
     {
-        $users = User::paginate();
+        $users = User::with(['roles'])->get();
         return view('users.index', compact('users'));
     }
 
@@ -23,7 +30,8 @@ class UsersController extends Controller
      */
     public function create(): Response
     {
-        //
+        $roles = Role::pluck('title', 'id');
+        return view('users.create', compact('roles'));
     }
 
     /**
@@ -31,39 +39,53 @@ class UsersController extends Controller
      */
     public function store(Request $request): RedirectResponse
     {
-        //
+        $user = User::create($request->all());
+        $user->roles()->sync($request->input('roles', []));
+
+        return redirect()->route('users.index');
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id): Response
+    public function show(User $user): Response
     {
-        //
+        $user->load('roles');
+
+        return view('frontend.users.show', compact('user'));
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id): Response
+    public function edit(User $user): Response
     {
-        //
+        $roles = Role::pluck('title', 'id');
+
+        $user->load('roles');
+
+        return view('users.edit', compact('roles', 'user'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id): RedirectResponse
+    public function update(Request $request, User $user): RedirectResponse
     {
-        //
+        $user->update($request->all());
+        $user->roles()->sync($request->input('roles', []));
+
+        return redirect()->route('frontend.users.index');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id): RedirectResponse
+    public function destroy(User $user): RedirectResponse
     {
-        //
+        $user->delete();
+
+        return back();
     }
 }
 

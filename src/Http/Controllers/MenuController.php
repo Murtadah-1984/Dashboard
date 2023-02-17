@@ -9,13 +9,20 @@ use App\Models\Menu;
 
 class MenuController extends Controller
 {
+     /**
+     * Create the controller instance.
+     */
+    public function __construct()
+    {
+        $this->authorizeResource(Menu::class, 'menu');
+    }
     /**
      * Display a listing of the resource.
      */
     public function index(): Response
     {
-        $menus = Menu::paginate();
-        return view('setting.menu.index', compact('menus'));
+        $menus = Menu::all();
+        return view('setting.menus.index', compact('menus'));
     }
 
     /**
@@ -23,7 +30,7 @@ class MenuController extends Controller
      */
     public function create(): Response
     {
-        //
+        return view('setting.menus.create');
     }
 
     /**
@@ -31,39 +38,42 @@ class MenuController extends Controller
      */
     public function store(Request $request): RedirectResponse
     {
-        //
+        $menu = Menu::create($request->all());
+        return redirect()->route('setting.menus.index');
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id): Response
+    public function show(Menu $menu): Response
     {
-        //
+        return view('setting.menus.show');
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id): Response
+    public function edit(Menu $menu): Response
     {
-        //
+        return view('setting.menu.edit', compact('menu'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id): RedirectResponse
+    public function update(Request $request, Menu $menu): RedirectResponse
     {
-        //
+        $menu->update($request->all());
+        return redirect()->route('setting.menus.index');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id): RedirectResponse
+    public function destroy(Menu $menu): RedirectResponse
     {
-        //
+        $menu->delete();
+        return back();
     }
 }
 
