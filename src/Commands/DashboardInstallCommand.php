@@ -74,7 +74,7 @@ class DashboardInstallCommand extends Command
             (new Filesystem)->copyDirectory(__DIR__ . '/../Policies', app_path('Policies/'));
 
             (new Filesystem)->ensureDirectoryExists(base_path('database/seeders'));
-            (new Filesystem)->copy(__DIR__ . '/../../database/seeders', base_path('database/seeders/'));
+            (new Filesystem)->copyDirectory(__DIR__ . '/../../database/seeders', base_path('database/seeders/'));
 
             copy(__DIR__ . '/../AppServiceProvider.php', app_path('Providers/AppServiceProvider.php'));
             copy(__DIR__ . '/../../resources/vite.config.js', base_path('vite.config.js'));
