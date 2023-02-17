@@ -5,13 +5,14 @@ namespace App\Models;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Contracts\UserContract;
 use App\Traits\DashboardUser;
 use App\Traits\RecordSignature;
 
 class User extends Authenticatable implements UserContract
 {
-    use DashboardUser, RecordSignature, HasFactory;
+    use DashboardUser, RecordSignature, SoftDeletes, HasFactory;
 
     protected $guarded = [];
 

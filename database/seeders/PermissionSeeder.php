@@ -18,7 +18,7 @@ class PermissionSeeder extends Seeder
     public function run(): void
     {
         $admin=Role::find(1);
-        $keys=['browse_','read_','edit_','add_','delete_'];
+        $keys=['browse_','read_','edit_','add_','delete_','restore_','foreceDelete_'];
         $tables = DB::select('SHOW TABLES');
         $ignoredTables=[
             "failed_jobs",

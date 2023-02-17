@@ -52,7 +52,7 @@ class RolePolicy
      */
     public function restore(User $user, Role $role): bool
     {
-        //
+        return $user->hasPermission('restore_roles');
     }
 
     /**
@@ -60,6 +60,6 @@ class RolePolicy
      */
     public function forceDelete(User $user, Role $role): bool
     {
-        //
+        return $user->hasPermission('forceDelete_roles');
     }
 }

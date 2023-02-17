@@ -21,6 +21,10 @@ trait RecordSignature
             $model->created_by = \Auth::User()->id;
             $model->created_at = Carbon::now()->timezone(config('dashboar.time_zone'));
         });
+
+        static::deleting(function ($model) {
+            $model->deleted_by = \Auth::User()->id;
+        });
         //etc
 
     }

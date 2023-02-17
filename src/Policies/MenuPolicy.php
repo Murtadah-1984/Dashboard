@@ -53,7 +53,7 @@ class MenuPolicy
      */
     public function restore(User $user, Menu $menu): bool
     {
-        //
+        return $user->hasPermission('restore_menus');
     }
 
     /**
@@ -61,6 +61,6 @@ class MenuPolicy
      */
     public function forceDelete(User $user, Menu $menu): bool
     {
-        //
+        return $user->hasPermission('forceDelete_menus');
     }
 }
