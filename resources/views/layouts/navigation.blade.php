@@ -19,11 +19,13 @@
                     </p>
                 </a>
             </li>
-            @foreach(\App\Helpers\Menu::menu() as $menuItem)
+            @foreach(App\Helpers\Menu::menu() as $menuItem)
+            @if(!is_null($menuItem->model))
             @can('viewAny',$menuItem->model)
+            @endif
             <li class="nav-item">
                 <a href="{{ (!$menuItem->children->isEmpty()? '#' : route($menuItem->route) )  }}" class="nav-link">
-                    <i class="nav-icon {{ $menuItem->class }}nav-icon"></i>
+                    <i class="nav-icon {{ $menuItem->class }} nav-icon"></i>
                     <p>
                         {{ $menuItem->title}}
                         @if(!$menuItem->children->isEmpty())
@@ -38,14 +40,17 @@
                             <li class="nav-item">
                                 <a href="{{ route($child->route) }}" class="nav-link">
                                     <i class="{{ $child->class}} nav-icon"></i>
-                                    <p>{{ $child->title}}/p>
+                                    <p>{{ $child->title}}</p>
                                 </a>
                             </li>
                         @endcan
                     @endforeach
                 </ul>
+                @endif
             </li>
+            @if(!is_null($menuItem->model))
             @endcan
+            @endif
             @endforeach
         </ul>
     </nav>

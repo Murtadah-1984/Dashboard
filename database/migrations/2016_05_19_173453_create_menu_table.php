@@ -16,6 +16,7 @@ class CreateMenuTable extends Migration
             $table->increments('id');
             $table->string('title');
             $table->string('route');
+            $table->string('model');
             $table->string('class')->nullable();
             $table->integer('parent_id')->nullable();
             $table->integer('order');

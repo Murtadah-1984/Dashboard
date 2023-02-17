@@ -9,4 +9,10 @@ use App\Traits\RecordSignature;
 class Menu extends Model 
 {
     use RecordSignature, SoftDeletes;
+
+    public function children()
+    {
+        return $this->hasMany(\App\Models\Menu::class, 'parent_id')
+            ->with('children');
+    }
 }
