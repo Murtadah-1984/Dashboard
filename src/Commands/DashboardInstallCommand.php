@@ -70,6 +70,9 @@ class DashboardInstallCommand extends Command
             (new Filesystem)->ensureDirectoryExists(app_path('Traits'));
             (new Filesystem)->copyDirectory(__DIR__ . '/../Traits', app_path('Traits/'));
 
+            (new Filesystem)->ensureDirectoryExists(base_path('database/seeders'));
+            (new Filesystem)->copyDirectory(__DIR__ . '/../../database/seeders', base_path('database/seeders/'));
+
             copy(__DIR__ . '/../AppServiceProvider.php', app_path('Providers/AppServiceProvider.php'));
             copy(__DIR__ . '/../../resources/vite.config.js', base_path('vite.config.js'));
             copy(__DIR__ . '/../../config/dashboard.php', config_path('dashboard.php'));
