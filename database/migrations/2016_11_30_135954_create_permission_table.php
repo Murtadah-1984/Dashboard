@@ -18,10 +18,10 @@ class CreatePermissionTable extends Migration
             $table->string('key')->index();
             $table->string('table_name');
             $table->timestamps();
-            $table->bigInteger('created_by')->nullable()->unsigned()->after('created_at');
-            $table->bigInteger('updated_by')->nullable()->unsigned()->after('updated_at');
-            $table->dateTime('deleted_at')->nullable()->after('updated_by');
-            $table->bigInteger('deleted_by')->nullable()->unsigned()->after('deleted_at');
+            $table->bigInteger('created_by')->nullable()->unsigned();
+            $table->bigInteger('updated_by')->nullable()->unsigned();
+            $table->dateTime('deleted_at')->nullable();
+            $table->bigInteger('deleted_by')->nullable()->unsigned();
             $table->foreign('created_by')->references('id')->on('users');
             $table->foreign('updated_by')->references('id')->on('users');
             $table->foreign('deleted_by')->references('id')->on('users');
