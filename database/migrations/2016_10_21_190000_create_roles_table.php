@@ -18,6 +18,8 @@ class CreateRolesTable extends Migration
             $table->string('name')->unique();
             $table->string('display_name');
             $table->timestamps();
+            $table->foreign('created_by')->references('id')->on('users')->after('created_at');
+            $table->foreign('updated_by')->references('id')->on('users')->after('updated_at');
         });
     }
 

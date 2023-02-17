@@ -4,13 +4,14 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Traits\RecordSignature;
 use App\Models\User;
 use App\Models\Permission;
 
 
 class Role extends Model
 {
-    use HasFactory;
+    use HasFactory, RecordSignature;
 
     protected $guarded = [];
 

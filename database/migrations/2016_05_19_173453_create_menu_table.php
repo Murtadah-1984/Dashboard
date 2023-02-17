@@ -20,6 +20,8 @@ class CreateMenuTable extends Migration
             $table->integer('parent_id')->nullable();
             $table->integer('order');
             $table->timestamps();
+            $table->foreign('created_by')->references('id')->on('users')->after('created_at');
+            $table->foreign('updated_by')->references('id')->on('users')->after('updated_at');
         });
 
     }

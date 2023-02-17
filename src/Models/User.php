@@ -7,10 +7,11 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use App\Contracts\UserContract;
 use App\Traits\DashboardUser;
+use App\Traits\RecordSignature;
 
 class User extends Authenticatable implements UserContract
 {
-    use DashboardUser, HasFactory;
+    use DashboardUser, RecordSignature, HasFactory;
 
     protected $guarded = [];
 

@@ -3,10 +3,13 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Traits\RecordSignature;
 use App\Models\Role;
 
 class Permission extends Model
 {
+    use RecordSignature;
+    
     protected $guarded = [];
 
     public function roles()

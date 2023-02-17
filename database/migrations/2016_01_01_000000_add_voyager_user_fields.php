@@ -14,6 +14,8 @@ class AddVoyagerUserFields extends Migration
                 $table->string('avatar')->nullable()->after('email')->default('users/default.png');
             }
             $table->bigInteger('role_id')->nullable()->unsigned()->after('id');
+            $table->foreign('created_by')->references('id')->on('users')->after('created_at');
+            $table->foreign('updated_by')->references('id')->on('users')->after('updated_at');
         });
     }
 
