@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Models\User;
 
-class UsersController extends Controller
+class UserController extends Controller
 {
      /**
      * Create the controller instance.
