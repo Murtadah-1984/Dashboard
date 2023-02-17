@@ -1,6 +1,6 @@
 <?php
 
-namespace Murtadah\Dashboard\Contracts;
+namespace App\Contracts;
 
 interface UserContract
 {
