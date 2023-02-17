@@ -1,9 +1,9 @@
 <?php
 
-namespace Murtadah\Dashboard\Traits;
+namespace App\Traits;
 
 use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
-use Murtadah\Dashboard\Models\Role;
+use App\Models\Role;
 
 
 /**
