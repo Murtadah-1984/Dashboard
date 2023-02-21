@@ -49,7 +49,10 @@ class DashboardInstallCommand extends Command
      */
     public function handle()
     {
-            $this->call('ui bootstrap --auth');
+            $this->call('ui',[
+                'type'=>'bootstrap',
+                '--auth'=>true,
+            ]);
             file_put_contents(
                 base_path('routes/web.php'),
                 file_get_contents(__DIR__ . '/../../routes/web.php'),
