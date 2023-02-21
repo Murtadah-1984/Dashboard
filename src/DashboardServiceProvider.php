@@ -4,6 +4,7 @@ namespace Murtadah\Dashboard;
 
 use Illuminate\Support\ServiceProvider;
 use Murtadah\Dashboard\Commands\DashboardInstallCommand;
+use Murtadah\Dashboard\Commands\GenerateModelCommand;
 use App;
 
 class DashboardServiceProvider extends ServiceProvider
@@ -34,6 +35,7 @@ class DashboardServiceProvider extends ServiceProvider
         if ($this->app->runningInConsole()) {
             $this->commands([
                 DashboardInstallCommand::class,
+                GenerateModelCommand::class
             ]);
         }
     }

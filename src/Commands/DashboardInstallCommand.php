@@ -49,6 +49,7 @@ class DashboardInstallCommand extends Command
      */
     public function handle()
     {
+            $this->call('ui bootstrap --auth');
             file_put_contents(
                 base_path('routes/web.php'),
                 file_get_contents(__DIR__ . '/../../routes/web.php'),
@@ -75,6 +76,9 @@ class DashboardInstallCommand extends Command
 
             (new Filesystem)->ensureDirectoryExists(base_path('database/seeders'));
             (new Filesystem)->copyDirectory(__DIR__ . '/../../database/seeders', base_path('database/seeders/'));
+
+            (new Filesystem)->ensureDirectoryExists(base_path('stubs'));
+            (new Filesystem)->copyDirectory(__DIR__ . '/../../stubs', base_path('stubs/'));
 
             copy(__DIR__ . '/../AppServiceProvider.php', app_path('Providers/AppServiceProvider.php'));
             copy(__DIR__ . '/../../resources/vite.config.js', base_path('vite.config.js'));

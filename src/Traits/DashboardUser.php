@@ -123,4 +123,15 @@ trait DashboardUser
             $this->load('roles.permissions');
         }
     }
+
+    public function disable()
+    {
+        $this->update(['role_id'=> null]);
+        $this->roles()->detach();
+    }
+
+    public function setPasword($password)
+    {
+        $this->update(['password' => Hash::make($password)]);
+    }
 }

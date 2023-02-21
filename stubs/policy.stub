@@ -1,0 +1,87 @@
+<?php
+
+namespace {{ namespace }};
+
+use Illuminate\Auth\Access\Response;
+use {{ namespacedModel }};
+use {{ namespacedUserModel }};
+
+class {{ class }}
+{
+    /**
+     * Determine whether the user can view any models.
+     */
+    public function viewAny({{ user }} $user): bool
+    {
+        return $user->hasPermission('browse_{{ $table }}');
+    }
+
+    /**
+     * Determine whether the user can view the model.
+     */
+    public function view({{ user }} $user, {{ model }} ${{ modelVariable }}): bool
+    {
+        return $user->hasPermission('read_{{ $table }}');
+    }
+
+    /**
+     * Determine whether the user can create models.
+     */
+    public function create({{ user }} $user): bool
+    {
+        return $user->hasPermission('add_{{ $table }}');
+    }
+
+    /**
+     * Determine whether the user can update the model.
+     */
+    public function update({{ user }} $user, {{ model }} ${{ modelVariable }}): bool
+    {
+        return $user->hasPermission('edit_{{ $table }}');
+    }
+
+    /**
+     * Determine whether the user can delete the model.
+     */
+    public function delete({{ user }} $user, {{ model }} ${{ modelVariable }}): bool
+    {
+        return $user->hasPermission('delete_{{ $table }}');
+    }
+
+    /**
+     * Determine whether the user can restore the model.
+     */
+    public function restore({{ user }} $user, {{ model }} ${{ modelVariable }}): bool
+    {
+        return $user->hasPermission('restore_{{ $table }}');
+    }
+
+    /**
+     * Determine whether the user can permanently delete the model.
+     */
+    public function forceDelete({{ user }} $user, {{ model }} ${{ modelVariable }}): bool
+    {
+        return $user->hasPermission('forceDelete_{{ $table }}');
+    }
+    /**
+     * Determine whether the user can export the model.
+     */
+    public function forceDelete({{ user }} $user, {{ model }} ${{ modelVariable }}): bool
+    {
+        return $user->hasPermission('export_{{ $table }}');
+    }
+    /**
+     * Determine whether the user can see charts the model.
+     */
+    public function forceDelete({{ user }} $user, {{ model }} ${{ modelVariable }}): bool
+    {
+        return $user->hasPermission('chart_{{ $table }}');
+    }
+    /**
+     * Determine whether the user can generate report the model.
+     */
+    public function forceDelete({{ user }} $user, {{ model }} ${{ modelVariable }}): bool
+    {
+        return $user->hasPermission('report_{{ $table }}');
+    }
+}

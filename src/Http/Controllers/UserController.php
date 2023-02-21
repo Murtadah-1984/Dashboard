@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Models\User;
+use App\Http\Requests\StoreUserRequest;
 
 class UserController extends Controller
 {
@@ -19,16 +21,18 @@ class UserController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(): Response
+    public function index()
     {
-        $users = User::with(['roles'])->get();
-        return view('users.index', compact('users'));
+        
+        $users=User::withTrashed()->with('role','roles')->get();
+        return view('users.index',compact('users'));
+
     }
 
     /**
      * Show the form for creating a new resource.
      */
-    public function create(): Response
+    public function create()
     {
         $roles = Role::pluck('title', 'id');
         return view('users.create', compact('roles'));
@@ -37,9 +41,15 @@ class UserController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request): RedirectResponse
+    public function store(StoreUserRequest $request): RedirectResponse
     {
-        $user = User::create($request->all());
+        
+        $user=User::create([
+            "name"=>$request->name,
+            "email"=>$request->email,
+            "role_id"=>$request->role_id,
+            'password' => Hash::make($request->password)
+        ]);
         $user->roles()->sync($request->input('roles', []));
 
         return redirect()->route('users.index');
@@ -52,7 +62,7 @@ class UserController extends Controller
     {
         $user->load('roles');
 
-        return view('frontend.users.show', compact('user'));
+        return view('users.show', compact('user'));
     }
 
     /**
@@ -75,7 +85,7 @@ class UserController extends Controller
         $user->update($request->all());
         $user->roles()->sync($request->input('roles', []));
 
-        return redirect()->route('frontend.users.index');
+        return redirect()->route('users.index');
     }
 
     /**
@@ -86,6 +96,28 @@ class UserController extends Controller
         $user->delete();
 
         return back();
+    }
+    public function massDestroy(MassDestroyUserRequest $request)
+    {
+        User::whereIn('id', request('ids'))->delete();
+
+        return response(null, Response::HTTP_NO_CONTENT);
+    }
+
+    public function restore(User $user): RedirectResponse
+    {
+        $user->restore();
+        return back();
+    }
+
+    public function disable(User $user){
+        $user->disable();
+        return redirect()->route('users.index');
+    }
+
+    public function changePassword(User $user){
+        $user->setPassword($request->password);
+        return redirect()->back()->with('success', 'Password Changed');
     }
 }
 

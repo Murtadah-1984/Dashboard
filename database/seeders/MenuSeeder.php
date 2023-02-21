@@ -23,7 +23,7 @@ class MenuSeeder extends Seeder
 
                 DB::table('menus')->insert([
                     'title' => 'Settings',
-                    'class'=>'fas fa-tools',
+                    'class'=>'fas fa-cogs',
                     'order'=> 100
                 ]);
 
@@ -61,6 +61,14 @@ class MenuSeeder extends Seeder
                     'class'=>'fas fa-clone',
                     'parent_id'=>2,
                     'order'=> 4
+                ]);
+
+                DB::table('menus')->insert([
+                    'title' => 'Dashboard Configrations',
+                    'route'=>'dashboard.config',
+                    'class'=>'fas fa-cog',
+                    'parent_id'=>2,
+                    'order'=> 5
                 ]);
 
     }

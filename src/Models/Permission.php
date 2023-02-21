@@ -25,6 +25,11 @@ class Permission extends Model
         self::firstOrCreate(['key' => 'edit_'.$table_name, 'table_name' => $table_name]);
         self::firstOrCreate(['key' => 'add_'.$table_name, 'table_name' => $table_name]);
         self::firstOrCreate(['key' => 'delete_'.$table_name, 'table_name' => $table_name]);
+        self::firstOrCreate(['key' => 'forceDelete_'.$table_name, 'table_name' => $table_name]);
+        self::firstOrCreate(['key' => 'restore_'.$table_name, 'table_name' => $table_name]);
+        self::firstOrCreate(['key' => 'export_'.$table_name, 'table_name' => $table_name]); 
+        self::firstOrCreate(['key' => 'chart_'.$table_name, 'table_name' => $table_name]); 
+        self::firstOrCreate(['key' => 'report_'.$table_name, 'table_name' => $table_name]); 
     }
 
     public static function removeFrom($table_name)

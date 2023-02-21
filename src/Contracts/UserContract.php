@@ -6,6 +6,10 @@ interface UserContract
 {
     public function role();
 
+    public function disable();
+
+    public function setPasword($password);
+
     public function hasRole($name);
 
     public function setRole($name);
