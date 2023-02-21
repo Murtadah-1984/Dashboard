@@ -5,17 +5,28 @@ namespace {{ namespace }};
 use {{ namespacedModel }};
 use {{ rootNamespace }}Http\Controllers\Controller;
 use {{ namespacedRequests }}
+use App\Charts\{{ model }}Chart;
+use App\Http\Requests\Store{{ model }}Request;
+use App\Http\Requests\Update{{ model }}Request;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Response;
 
 class {{ class }} extends Controller
 {
+     /**
+     * Create the controller instance.
+     */
+    public function __construct()
+    {
+        $this->authorizeResource({{ model }}::class, "{{ model }}");
+    }
     /**
      * Display a listing of the resource.
      */
-    public function index(): Response
+    public function index({{ model }}Chart $chart): Response
     {
-        //
+        ${{ model }}s={{ model }}::withTrashed()->get();
+        return view('{{ model }}s.index',compact('chart','{{ model }}s'));
     }
 
     /**
@@ -29,9 +40,10 @@ class {{ class }} extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store({{ storeRequest }} $request): RedirectResponse
+    public function store(Store{{ model }}Request $request): RedirectResponse
     {
-        //
+        ${{ model }}={{ model }}::create($request->all());
+        return redirect()->route('{{ model }}s.index')->with('message','{{ model }} Created Successfully');
     }
 
     /**
@@ -39,7 +51,8 @@ class {{ class }} extends Controller
      */
     public function show({{ model }} ${{ modelVariable }}): Response
     {
-        //
+        ${{ model }}={{ model }}::withTrashed()->find(${{ modelVariable }});
+        return Response::json(${{ model }});
     }
 
     /**
@@ -47,15 +60,17 @@ class {{ class }} extends Controller
      */
     public function edit({{ model }} ${{ modelVariable }}): Response
     {
-        //
+        ${{ model }}={{ model }}::withTrashed()->find(${{ modelVariable }});
+        return Response::json(${{ model }});
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update({{ updateRequest }} $request, {{ model }} ${{ modelVariable }}): RedirectResponse
+    public function update(Update{{ model }}Request $request, {{ model }} ${{ modelVariable }}): RedirectResponse
     {
-        //
+        ${{ modelVariable }}->update($request->all());
+        return redirect()->route('{{ model }}s.index')->with('message','{{ model }} Updated Successfully');
     }
 
     /**
@@ -63,6 +78,16 @@ class {{ class }} extends Controller
      */
     public function destroy({{ model }} ${{ modelVariable }}): RedirectResponse
     {
-        //
+        ${{ modelVariable }}->delete();
+        return back()->with('message','{{ model }} is Deleted Successfully');
+    }
+
+    /**
+     * Restore the specified resource from trash.
+     */
+    public function restore({{ model }} ${{ modelVariable }}): RedirectResponse
+    {
+        {{ model }} ::withTrashed()->find(${{ modelVariable }})->restore();
+        return redirect()->route('{{ model }}s.index')->with('message','{{ model }} Restored Successfully');
     }
 }

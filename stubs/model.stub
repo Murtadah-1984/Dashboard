@@ -4,10 +4,17 @@ namespace {{ namespace }};
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Contracts\{{ class }}Contract;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Traits\RecordSignature; 
+use App\Traits\{{ class }}Trait;
 
-class {{ class }} extends Model
+class {{ class }} extends Model implements {{ class }}Contract
 {
-    use RecordSignature, SoftDeletes;
+     
+    use {{ class }}Trait, RecordSignature, SoftDeletes;
+
+    protected $fillable=[
+        
+    ];
 }

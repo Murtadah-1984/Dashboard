@@ -11,6 +11,8 @@ class {{ class }} extends FormRequest
      */
     public function authorize(): bool
     {
+        // return $user->hasPermission('add_User');
+        // return $user->hasPermission('edit_User');
         return false;
     }
 

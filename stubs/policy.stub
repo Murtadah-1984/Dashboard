@@ -13,7 +13,7 @@ class {{ class }}
      */
     public function viewAny({{ user }} $user): bool
     {
-        return $user->hasPermission('browse_{{ $table }}');
+        return $user->hasPermission('browse_{{ model }}');
     }
 
     /**
@@ -21,7 +21,7 @@ class {{ class }}
      */
     public function view({{ user }} $user, {{ model }} ${{ modelVariable }}): bool
     {
-        return $user->hasPermission('read_{{ $table }}');
+        return $user->hasPermission('read_{{ model }}');
     }
 
     /**
@@ -29,7 +29,7 @@ class {{ class }}
      */
     public function create({{ user }} $user): bool
     {
-        return $user->hasPermission('add_{{ $table }}');
+        return $user->hasPermission('add_{{ model }}');
     }
 
     /**
@@ -37,7 +37,7 @@ class {{ class }}
      */
     public function update({{ user }} $user, {{ model }} ${{ modelVariable }}): bool
     {
-        return $user->hasPermission('edit_{{ $table }}');
+        return $user->hasPermission('edit_{{ model }}');
     }
 
     /**
@@ -45,7 +45,7 @@ class {{ class }}
      */
     public function delete({{ user }} $user, {{ model }} ${{ modelVariable }}): bool
     {
-        return $user->hasPermission('delete_{{ $table }}');
+        return $user->hasPermission('delete_{{ model }}');
     }
 
     /**
@@ -53,7 +53,7 @@ class {{ class }}
      */
     public function restore({{ user }} $user, {{ model }} ${{ modelVariable }}): bool
     {
-        return $user->hasPermission('restore_{{ $table }}');
+        return $user->hasPermission('restore_{{ model }}');
     }
 
     /**
@@ -61,27 +61,27 @@ class {{ class }}
      */
     public function forceDelete({{ user }} $user, {{ model }} ${{ modelVariable }}): bool
     {
-        return $user->hasPermission('forceDelete_{{ $table }}');
+        return $user->hasPermission('forceDelete_{{ model }}');
     }
     /**
      * Determine whether the user can export the model.
      */
     public function forceDelete({{ user }} $user, {{ model }} ${{ modelVariable }}): bool
     {
-        return $user->hasPermission('export_{{ $table }}');
+        return $user->hasPermission('export_{{ model }}');
     }
     /**
      * Determine whether the user can see charts the model.
      */
     public function forceDelete({{ user }} $user, {{ model }} ${{ modelVariable }}): bool
     {
-        return $user->hasPermission('chart_{{ $table }}');
+        return $user->hasPermission('chart_{{ model }}');
     }
     /**
      * Determine whether the user can generate report the model.
      */
     public function forceDelete({{ user }} $user, {{ model }} ${{ modelVariable }}): bool
     {
-        return $user->hasPermission('report_{{ $table }}');
+        return $user->hasPermission('report_{{ model }}');
     }
 }

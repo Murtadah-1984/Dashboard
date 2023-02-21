@@ -18,7 +18,13 @@ trait RecordSignature
 
         static::creating(function ($model) {
 
-            $model->created_by = \Auth::User()->id;
+            if(is_null(\Auth::User())){
+                $model->created_by = 1;
+            }else{
+                $model->created_by = \Auth::User()->id;
+            }
+
+            
             $model->created_at = Carbon::now()->timezone(config('dashboar.time_zone'));
         });
 

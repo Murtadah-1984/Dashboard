@@ -49,10 +49,20 @@ class DashboardInstallCommand extends Command
      */
     public function handle()
     {
+            $db = $this->ask('Please Enter DB Name');
+            $db_user = $this->ask('Please Enter DB User');
+            $db_password= $this->ask('Please Enter DB Password');
+            config([
+                'database.connections.mysql.database' => $db,
+                'database.connections.mysql.username' => $db_user,
+                'database.connections.mysql.password' => $db_password,
+                'database.connections.mysql.engine' => 'InnoDB',
+            ]);
             $this->call('ui',[
                 'type'=>'bootstrap',
                 '--auth'=>true,
             ]);
+            $this->call('octane:install');
             file_put_contents(
                 base_path('routes/web.php'),
                 file_get_contents(__DIR__ . '/../../routes/web.php'),
