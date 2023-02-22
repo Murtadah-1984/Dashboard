@@ -18,7 +18,7 @@ class GenerateModelCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'model:gen';
+    protected $signature = 'dashboard:make';
 
     /**
      * The console command description.
@@ -101,7 +101,7 @@ class GenerateModelCommand extends Command
 
     public function makeModel($model)
     {
-       $this->call('dashboard:make',[
+       $this->call('make:model',[
         'name' => $model,
        ]);    
        $this->info('Model Generated Successfully');
