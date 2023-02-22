@@ -4,6 +4,7 @@ namespace Murtadah\Dashboard\Commands;
 use Artisan;
 use RuntimeException;
 use Illuminate\Support\Pluralizer;
+use Illuminate\Support\Str;
 use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
 use Symfony\Component\Process\Process;
@@ -51,9 +52,9 @@ class GenerateModelCommand extends Command
     public function handle()
     {
         //Get the names
-        $model = $this->ask('Please Enter Model Name');
         $table = $this->ask('Please Enter table Name');
-        $controller = $this->ask('Please Enter Controller Name');
+        $model=Str::ucfirst(Str::singular(Str::studly($table)));
+        $controller=Str::remove(' ',str($model)->append('Controller'));
 
         //Create Contract
         $this->makeContract($model);
