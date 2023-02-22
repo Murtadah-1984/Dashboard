@@ -93,7 +93,7 @@ class GenerateModelCommand extends Command
         $this->generatePermissions($model);
 
         //Create Menu
-        $this->generateMenu($model);
+        $this->generateMenu($model, $table);
 
         
         
@@ -231,9 +231,9 @@ class GenerateModelCommand extends Command
         $this->info('Permissions Generated Successfully');
     }
 
-    public function generateMenu($model)
+    public function generateMenu($model,$table)
     {
-        Menu::generate($model);
+        Menu::generate($model, $table);
         $this->info('Menu Generated Successfully');
     }
 

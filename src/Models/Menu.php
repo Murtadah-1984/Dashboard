@@ -19,12 +19,12 @@ class Menu extends Model
             ->with('children');
     }
 
-    public static function generate($model)
+    public static function generate($model, $table)
     {
         self::firstOrCreate([
-            'title' => "{{$model}}s",
-            'route'=>"{{$model}}.index",
-            'model'=>"App\Models\{{$model}}",
+            'title' => "{$model}s",
+            'route'=>"{$table}.index",
+            'model'=>"App\Models\{$model}",
             'class'=>'fas fa-clone',
             'order'=> 0
         ]);
