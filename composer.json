@@ -6,8 +6,10 @@
         "laravel/ui": "^4.0",
         "consoletvs/charts": "^6.6",
         "doctrine/dbal": "^3.6",
+        "drewm/mailchimp-api": "^2.5",
         "laravel/octane": "^1.4",
-        "spatie/flysystem-dropbox": "^2.0"
+        "spatie/flysystem-dropbox": "^2.0",
+        "spatie/laravel-newsletter": "^5.1"
     },
     "license": "MIT",
     "autoload": {

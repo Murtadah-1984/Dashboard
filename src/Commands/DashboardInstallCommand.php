@@ -100,6 +100,12 @@ class DashboardInstallCommand extends Command
             $this->call('migrate',[
                 '--seed'=>true,
             ]);
+
+            $this->call('vendor:publish',[
+                '--tag'=>"newsletter-config",
+            ]);
+
+            
             $this->replaceWithAdminLTETheme();
             
 
