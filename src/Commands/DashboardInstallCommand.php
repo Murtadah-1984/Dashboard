@@ -94,6 +94,7 @@ class DashboardInstallCommand extends Command
             (new Filesystem)->copyDirectory(__DIR__ . '/../../stubs', base_path('stubs/'));
 
             copy(__DIR__ . '/../AppServiceProvider.php', app_path('Providers/AppServiceProvider.php'));
+            copy(__DIR__ . '/../EventServiceProvider.php', app_path('Providers/EventServiceProvider.php'));
             copy(__DIR__ . '/../../resources/vite.config.js', base_path('vite.config.js'));
             copy(__DIR__ . '/../../config/dashboard.php', config_path('dashboard.php'));
 

@@ -13,7 +13,7 @@ trait RecordSignature
         static::updating(function ($model) {
 
             $model->updated_by = \Auth::User()->id;
-            $model->updated_at = Carbon::now()->timezone(config('dashboar.time_zone'));
+            $model->updated_at = Carbon::now()->timezone(config('dashboard.time_zone'));
         });
 
         static::creating(function ($model) {
@@ -25,7 +25,7 @@ trait RecordSignature
             }
 
             
-            $model->created_at = Carbon::now()->timezone(config('dashboar.time_zone'));
+            $model->created_at = Carbon::now()->timezone(config('dashboard.time_zone'));
         });
 
         static::deleting(function ($model) {

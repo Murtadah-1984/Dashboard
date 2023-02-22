@@ -3,9 +3,19 @@
 namespace {{ namespace }};
 
 use {{ namespacedModel }};
+use Carbon\Carbon;
 
 class {{ class }}
 {
+    /**
+     * Handle the {{ model }} "creating" event.
+     */
+    public function creating({{ model }} ${{ modelVariable }}): void
+    {
+         ${{ modelVariable }}->created_by = \Auth::User()->id;
+         ${{ modelVariable }}->created_at = Carbon::now()->timezone(config('dashboard.time_zone'));
+    }
+
     /**
      * Handle the {{ model }} "created" event.
      */
@@ -15,11 +25,28 @@ class {{ class }}
     }
 
     /**
+     * Handle the {{ model }} "updating" event.
+     */
+    public function creating({{ model }} ${{ modelVariable }}): void
+    {
+         ${{ modelVariable }}->updated_by = \Auth::User()->id;
+         ${{ modelVariable }}->updated_at = Carbon::now()->timezone(config('dashboard.time_zone'));
+    }
+
+    /**
      * Handle the {{ model }} "updated" event.
      */
     public function updated({{ model }} ${{ modelVariable }}): void
     {
         //
+    }
+
+    /**
+     * Handle the {{ model }} "deleting" event.
+     */
+    public function deleting({{ model }} ${{ modelVariable }}): void
+    {
+         ${{ modelVariable }}->deleted_by = \Auth::User()->id;
     }
 
     /**

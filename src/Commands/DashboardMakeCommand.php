@@ -101,7 +101,7 @@ class GenerateModelCommand extends Command
 
     public function makeModel($model)
     {
-       $this->call('make:model',[
+       $this->call('dashboard:make',[
         'name' => $model,
        ]);    
        $this->info('Model Generated Successfully');
