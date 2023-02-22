@@ -6,8 +6,8 @@ use {{ namespacedModel }};
 use {{ rootNamespace }}Http\Controllers\Controller;
 use {{ namespacedRequests }}
 use App\Charts\{{ model }}Chart;
-use App\Http\Requests\Store{{ model }}Request;
-use App\Http\Requests\Update{{ model }}Request;
+use App\Http\Requests\Store\Store{{ model }}Request;
+use App\Http\Requests\Update\Update{{ model }}Request;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Response;
 

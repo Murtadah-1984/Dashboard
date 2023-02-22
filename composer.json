@@ -6,7 +6,8 @@
         "laravel/ui": "^4.0",
         "consoletvs/charts": "^6.6",
         "doctrine/dbal": "^3.6",
-        "laravel/octane": "^1.4"
+        "laravel/octane": "^1.4",
+        "spatie/flysystem-dropbox": "^2.0"
     },
     "license": "MIT",
     "autoload": {

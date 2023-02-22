@@ -17,4 +17,10 @@ class {{ class }} extends Model implements {{ class }}Contract
     protected $fillable=[
         
     ];
+
+    protected $casts = [
+    'created_at' => 'datetime:d-m-Y',
+    'updated_at' => 'datetime:d-m-Y',
+    'deleted_at' => 'datetime:d-m-Y',
+    ];
 }

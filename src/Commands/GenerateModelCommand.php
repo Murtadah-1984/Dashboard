@@ -145,11 +145,11 @@ class GenerateModelCommand extends Command
     public function makeRequest($model)
     {
         $this->call('make:request', [
-            'name' => "Store{$model}Request",
+            'name' => "Store/Store{$model}Request",
         ]);
 
         $this->call('make:request', [
-            'name' => "Update{$model}Request",
+            'name' => "Update/Update{$model}Request",
         ]);
 
         $this->info('Request Generated Successfully');
@@ -217,8 +217,8 @@ class GenerateModelCommand extends Command
 
     public function generateViews($model)
     {
-        (new Filesystem)->ensureDirectoryExists(resource_path("{$model}s"));
-        copy(base_path('stubs/index.blade.php'), resource_path("{$model}s/index.blade.php"));
+        (new Filesystem)->ensureDirectoryExists(resource_path("views/{$model}s"));
+        copy(base_path('stubs/index.blade.php'), resource_path("views/{$model}s/index.blade.php"));
 
         $this->info('Views Generated Successfully');
     }
