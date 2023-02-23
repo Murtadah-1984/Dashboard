@@ -136,7 +136,9 @@ class DashboardInstallCommand extends Command
         (new Filesystem)->ensureDirectoryExists(public_path('js'));
         (new Filesystem)->ensureDirectoryExists(public_path('images'));
         (new Filesystem)->ensureDirectoryExists(public_path('webfonts'));
+        (new Filesystem)->ensureDirectoryExists(public_path('build'));
 
+        (new Filesystem)->copyDirectory(__DIR__ . '/../../resources/build', public_path('build'));
         (new Filesystem)->copyDirectory(__DIR__ . '/../../resources/css', public_path('css'));
         (new Filesystem)->copyDirectory(__DIR__ . '/../../resources/js', public_path('js'));
         (new Filesystem)->copyDirectory(__DIR__ . '/../../resources/images', public_path('images'));
@@ -162,7 +164,7 @@ class DashboardInstallCommand extends Command
             file_get_contents(__DIR__ . '/../../resources/sass/app.scss'),
             FILE_APPEND
         );
-        $this->runCommands(['npm run build']);
+        //$this->runCommands(['npm run build']);
         $this->components->info('Laravel UI scaffolding replaced successfully.');
     }
 
