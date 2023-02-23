@@ -15,7 +15,8 @@ use App\Traits\hasStatuses;
 class {{ class }} extends Model //implements {{ class }}Contract
 {
      
-    use {{ class }}Trait, RecordSignature, Reportable, SoftDeletes , hasStatuses;
+    //use {{ class }}Trait;
+    use RecordSignature, Reportable, SoftDeletes , hasStatuses;
 
     protected $fillable=[
         
