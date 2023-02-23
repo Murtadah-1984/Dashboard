@@ -170,6 +170,7 @@ class GenerateModelCommand extends Command
         $this->call('make:controller', array_filter([
             'name' => $controller,
             '--model' => $model,
+            '--resource' =>true
         ]));    
         $this->info('Controller Generated Successfully');
     }
