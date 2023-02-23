@@ -11,11 +11,11 @@ use Illuminate\Notification\Notifiable;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Contracts\UserContract;
 use App\Traits\DashboardUser;
-use App\Traits\RecordSignature;
+use App\Traits\RecordStampAndReport;
 
 class User extends Authenticatable implements UserContract
 {
-    use DashboardUser, RecordSignature, SoftDeletes, HasFactory, Notifiable;
+    use DashboardUser, RecordStampAndReport, SoftDeletes, HasFactory, Notifiable;
 
     protected $guarded = [];
 

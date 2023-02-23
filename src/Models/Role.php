@@ -5,14 +5,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use App\Traits\RecordSignature;
+use App\Traits\RecordStampAndReport;
 use App\Models\User;
 use App\Models\Permission;
 
 
 class Role extends Model
 {
-    use HasFactory, RecordSignature, SoftDeletes;
+    use HasFactory, RecordStampAndReport, SoftDeletes;
 
     protected $guarded = [];
 

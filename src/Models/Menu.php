@@ -4,11 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use App\Traits\RecordSignature;
+use App\Traits\RecordStampAndReport;
 
 class Menu extends Model 
 {
-    use RecordSignature, SoftDeletes;
+    use RecordStampAndReport, SoftDeletes;
    
     protected $fillable=[
         "title", "route", "model", "class", "parent_id", "order"

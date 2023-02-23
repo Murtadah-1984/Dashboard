@@ -4,12 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use App\Traits\RecordSignature;
+use App\Traits\RecordStampAndReport;
 use App\Models\Role;
 
 class Permission extends Model
 {
-    use RecordSignature, SoftDeletes;
+    use RecordStampAndReport, SoftDeletes;
     
     protected $guarded = [];
 
