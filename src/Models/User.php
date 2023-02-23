@@ -3,7 +3,9 @@
 namespace App\Models;
 
 use Carbon\Carbon;
+use Hash;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notification\Notifiable;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -24,33 +26,32 @@ class User extends Authenticatable implements UserContract
         return $value ?? config('voyager.user.default_avatar', 'users/default.png');
     }
 
-    public function setCreatedAtAttribute($value)
+    public function settings(): Attribute
     {
-        $this->attributes['created_at'] = Carbon::parse($value)->format('Y-m-d H:i:s');
+        return new Attribute(
+            get: fn ($value) => collect(json_decode((string)$value)),
+            set: fn ($value) => $this->attributes['settings'] = $value ? $value->toJson() : json_encode([]),
+        );
     }
 
-    public function setSettingsAttribute($value)
+    public function locale(): Attribute
     {
-        $this->attributes['settings'] = $value ? $value->toJson() : json_encode([]);
+        return new Attribute(
+            get: fn ($value) => $this->settings->get('locale'),
+            set: fn ($value) => $this->settings->merge(['locale' => $value]),
+        );
     }
 
-    public function getSettingsAttribute($value)
+    protected function title(): Attribute
     {
-        return collect(json_decode((string)$value));
-    }
-
-    public function setLocaleAttribute($value)
-    {
-        $this->settings = $this->settings->merge(['locale' => $value]);
-    }
-
-    public function getLocaleAttribute()
-    {
-        return $this->settings->get('locale');
+        return new Attribute(
+            set: fn ($value) => Hash::make($value),
+        );
     }
 
     protected static function newFactory()
     {
         return UserFactory::new();
     }
+    
 }
