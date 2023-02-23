@@ -98,7 +98,7 @@ class DashboardInstallCommand extends Command
             copy(__DIR__ . '/../../resources/vite.config.js', base_path('vite.config.js'));
             copy(__DIR__ . '/../../config/dashboard.php', config_path('dashboard.php'));
 
-            $this->call('migrate',[
+            $this->call('migrate:fresh',[
                 '--seed'=>true,
             ]);
 
