@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Traits\App;
+namespace App\Traits;
 
 use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
 use App\Models\Role;

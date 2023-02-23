@@ -53,20 +53,31 @@ class GenerateModelCommand extends Command
     {
         //Get the names
         $table = $this->ask('Please Enter table Name');
+        $observer = $this->ask('Do you need observer? yes/no');
+        $traitContract = $this->ask('Do you need Trait & Contract? yes/no');
         $model=Str::ucfirst(Str::singular(Str::studly($table)));
         $controller=Str::remove(' ',str($model)->append('Controller'));
 
-        //Create Contract
-        $this->makeContract($model);
+        //Create Trait and C0ntract
+        if($traitContract == 'yes')
+        {
+            //Create Contract
+            $this->makeContract($model);
 
-        //Create Trait
-        $this->MakeTraits($model);
+            //Create Trait
+            $this->MakeTraits($model);
+        }
+        
 
         //Create Model
         $this->makeModel($model);
 
         //Create Observer
-        $this->makeObserver($model);
+        if($observer == 'yes')
+        {
+            $this->makeObserver($model);
+        }
+        
 
         //Create Migration
         $this->makeMigration($table);
@@ -93,9 +104,7 @@ class GenerateModelCommand extends Command
         $this->generatePermissions($model);
 
         //Create Menu
-        $this->generateMenu($model, $table);
-
-        
+        $this->generateMenu($model, $table);        
         
     }
 
@@ -132,6 +141,28 @@ class GenerateModelCommand extends Command
             'name' => "{$model}Chart",
         ]));    
         $this->info('Chart Generated Successfully');
+    }
+
+    public function makeEvent($model)
+    {
+        $this->call('make:event', array_filter([
+            'name' => "{$model}Created",
+        ]));
+        $this->call('make:event', array_filter([
+            'name' => "{$model}Updated",
+        ])); 
+        $this->call('make:event', array_filter([
+            'name' => "{$model}Restored",
+        ]));  
+        $this->call('make:event', array_filter([
+            'name' => "{$model}Deleted",
+        ])); 
+        $this->call('make:event', array_filter([
+            'name' => "{$model}ForceDeleted",
+        ])); 
+        
+        $this->call('event:cache');  
+        $this->info('Events Generated Successfully');
     }
 
     public function makeController($controller, $model)

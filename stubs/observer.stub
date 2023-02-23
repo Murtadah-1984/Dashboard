@@ -3,17 +3,19 @@
 namespace {{ namespace }};
 
 use {{ namespacedModel }};
-use Carbon\Carbon;
+use App\Models\Report;
+use Schema;
 
 class {{ class }}
 {
+    
     /**
      * Handle the {{ model }} "creating" event.
      */
     public function creating({{ model }} ${{ modelVariable }}): void
     {
-         ${{ modelVariable }}->created_by = \Auth::User()->id;
-         ${{ modelVariable }}->created_at = Carbon::now()->timezone(config('dashboard.time_zone'));
+         ${{ modelVariable }}->created_by = auth()->id;
+         ${{ modelVariable }}->created_at = now()->timezone(config('dashboard.time_zone'));
     }
 
     /**
@@ -21,7 +23,7 @@ class {{ class }}
      */
     public function created({{ model }} ${{ modelVariable }}): void
     {
-        //
+        $this->reportDetails('Created');
     }
 
     /**
@@ -29,8 +31,8 @@ class {{ class }}
      */
     public function creating({{ model }} ${{ modelVariable }}): void
     {
-         ${{ modelVariable }}->updated_by = \Auth::User()->id;
-         ${{ modelVariable }}->updated_at = Carbon::now()->timezone(config('dashboard.time_zone'));
+         ${{ modelVariable }}->updated_by = auth()->id;
+         ${{ modelVariable }}->updated_at = now()->timezone(config('dashboard.time_zone'));
     }
 
     /**
@@ -38,7 +40,7 @@ class {{ class }}
      */
     public function updated({{ model }} ${{ modelVariable }}): void
     {
-        //
+        $this->reportDetails('Updated');
     }
 
     /**
@@ -46,7 +48,7 @@ class {{ class }}
      */
     public function deleting({{ model }} ${{ modelVariable }}): void
     {
-         ${{ modelVariable }}->deleted_by = \Auth::User()->id;
+         ${{ modelVariable }}->deleted_by = auth()->id;
     }
 
     /**
@@ -54,7 +56,7 @@ class {{ class }}
      */
     public function deleted({{ model }} ${{ modelVariable }}): void
     {
-        //
+        $this->reportDetails('Deleted');
     }
 
     /**
@@ -62,7 +64,7 @@ class {{ class }}
      */
     public function restored({{ model }} ${{ modelVariable }}): void
     {
-        //
+        $this->reportDetails('Restored');
     }
 
     /**
@@ -70,6 +72,29 @@ class {{ class }}
      */
     public function forceDeleted({{ model }} ${{ modelVariable }}): void
     {
-        //
+        $this->reportDetails('Forcely Deleted');
+    }
+
+    public function makeModelDetails()
+    {
+        $hiddenColumns=config('dashboard.hiddenColumns');
+        $columns=Schema::getColumnListing(${{ modelVariable }}->getTable());
+        $details="";
+        foreach($columns as $columnName){
+            if(!in_array($columnName ,$hiddenColumns){
+                $details.=${{ modelVariable }}->$columnName."\n";
+            }
+        }
+        return $details;
+    }
+
+    public function reportDetails($task)
+    {
+        Report::create([
+            'task'=>"{{ model }}  $task",
+            'user'=>auth()->name,
+            'details'=>$this->makeModelDetails(),
+            'created_at'=>now()->timezone(config('dashboard.time_zone'))
+        ]);
     }
 }

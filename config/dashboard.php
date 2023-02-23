@@ -25,4 +25,6 @@ return [
      */
     'model_primary_key_attribute' => 'model_id',
 
+    'hiddenColumns'=>['id','created_at','created_by','updated_at','updated_by','deleted_at','deleted_by']
+
 ];
