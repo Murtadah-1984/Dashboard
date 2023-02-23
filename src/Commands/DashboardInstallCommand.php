@@ -49,14 +49,8 @@ class DashboardInstallCommand extends Command
      */
     public function handle()
     {
-            $db = $this->ask('Please Enter DB Name');
-            $db_user = $this->ask('Please Enter DB User');
-            $db_password= $this->ask('Please Enter DB Password');
             config([
-                'database.connections.mysql.database' => $db,
-                'database.connections.mysql.username' => $db_user,
-                'database.connections.mysql.password' => $db_password,
-                'database.connections.mysql.engine' => 'InnoDB',
+                'database.connections.mysql.engine' => 'InnoDB'
             ]);
             $this->call('ui',[
                 'type'=>'bootstrap',
