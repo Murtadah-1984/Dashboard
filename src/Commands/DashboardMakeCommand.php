@@ -11,7 +11,7 @@ use Symfony\Component\Process\Process;
 use App\Models\Permission;
 use App\Models\Menu;
 
-class GenerateModelCommand extends Command
+class DashboardMakeCommand extends Command
 {
     /**
      * The name and signature of the console command.
