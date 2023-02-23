@@ -49,53 +49,75 @@ class DashboardInstallCommand extends Command
      */
     public function handle()
     {
-            config([
-                'database.connections.mysql.engine' => 'InnoDB'
-            ]);
+            // Change DB Engine
+            config(['database.connections.mysql.engine' => 'InnoDB']);
+
+            // Install Laravel UI
             $this->call('ui',[
                 'type'=>'bootstrap',
                 '--auth'=>true,
             ]);
-            $this->call('octane:install');
-            file_put_contents(
-                base_path('routes/web.php'),
-                file_get_contents(__DIR__ . '/../../routes/web.php'),
-                FILE_APPEND
-            );
 
-            (new Filesystem)->copyDirectory(__DIR__ . '/../Http/controllers', app_path('Http/Controllers/'));
+            // Install Laravel Octane
+            $this->call('octane:install',[
+                '--server'=>'roadrunner',
+            ]);
+            
+            //Copy Controllers
+            (new Filesystem)->copyDirectory(__DIR__ . '/../Http/Controllers', app_path('Http/Controllers/'));
+
+            //Copy Models
             (new Filesystem)->copyDirectory(__DIR__ . '/../Models', app_path('Models/'));
 
+            //Copy Route
+            (new Filesystem)->copyDirectory(__DIR__ . '/../../routes', base_path('routes/'));
+
+            //Copy Request
             (new Filesystem)->ensureDirectoryExists(app_path('Http/Requests'));
             (new Filesystem)->copyDirectory(__DIR__ . '/../Http/requests', app_path('Http/Requests/'));
 
+            //Copy Helpers
             (new Filesystem)->ensureDirectoryExists(app_path('Helpers'));
             (new Filesystem)->copyDirectory(__DIR__ . '/../Helpers', app_path('Helpers/'));
 
+            //Copy Contract
             (new Filesystem)->ensureDirectoryExists(app_path('Contracts'));
             (new Filesystem)->copyDirectory(__DIR__ . '/../Contracts', app_path('Contracts/'));
 
+            //Copy Traits
             (new Filesystem)->ensureDirectoryExists(app_path('Traits'));
             (new Filesystem)->copyDirectory(__DIR__ . '/../Traits', app_path('Traits/'));
 
+            //Copy Policy
             (new Filesystem)->ensureDirectoryExists(app_path('Policies'));
             (new Filesystem)->copyDirectory(__DIR__ . '/../Policies', app_path('Policies/'));
 
+            // Copy Seeders
             (new Filesystem)->ensureDirectoryExists(base_path('database/seeders'));
             (new Filesystem)->copyDirectory(__DIR__ . '/../../database/seeders', base_path('database/seeders/'));
 
+            //Copy Stubs
             (new Filesystem)->ensureDirectoryExists(base_path('stubs'));
             (new Filesystem)->copyDirectory(__DIR__ . '/../../stubs', base_path('stubs/'));
 
+            //Copy App Service Provider
             copy(__DIR__ . '/../AppServiceProvider.php', app_path('Providers/AppServiceProvider.php'));
+
+            //Copy Event Service Provider
             copy(__DIR__ . '/../EventServiceProvider.php', app_path('Providers/EventServiceProvider.php'));
+
+            //Copy Vite
             copy(__DIR__ . '/../../resources/vite.config.js', base_path('vite.config.js'));
+
+            // Copy Dashboard Config File 
             copy(__DIR__ . '/../../config/dashboard.php', config_path('dashboard.php'));
 
+            // Migratation
             $this->call('migrate:fresh',[
                 '--seed'=>true,
             ]);
 
+            // Publish config for spatie/ news letter
             $this->call('vendor:publish',[
                 '--tag'=>"newsletter-config",
             ]);
