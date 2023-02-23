@@ -7,8 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 //use App\Contracts\{{ class }}Contract;
 //use App\Traits\{{ class }}Trait;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use App\Traits\RecordSignature; 
-use App\Traits\Reportable;
+use App\Traits\RecordStampAndReport; 
 use App\Traits\hasStatuses; 
 
 
@@ -16,7 +15,7 @@ class {{ class }} extends Model //implements {{ class }}Contract
 {
      
     //use {{ class }}Trait;
-    use RecordSignature, SoftDeletes , hasStatuses;
+    use RecordStampAndReport, SoftDeletes , hasStatuses;
 
     protected $fillable=[
         
