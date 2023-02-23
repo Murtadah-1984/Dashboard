@@ -10,8 +10,8 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notification\Notifiable;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Contracts\UserContract;
-use App\Traits\App\DashboardUser;
-use App\Traits\App\RecordSignature;
+use App\Traits\DashboardUser;
+use App\Traits\RecordSignature;
 
 class User extends Authenticatable implements UserContract
 {

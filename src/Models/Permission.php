@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use App\Traits\App\RecordSignature;
+use App\Traits\RecordSignature;
 use App\Models\Role;
 
 class Permission extends Model
