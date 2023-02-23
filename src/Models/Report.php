@@ -6,9 +6,6 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 //use App\Contracts\ReportContract;
 //use App\Traits\ReportTrait;
-use Illuminate\Database\Eloquent\SoftDeletes;
-use App\Traits\RecordSignature; 
-use App\Traits\Reportable;
 use App\Traits\hasStatuses; 
 
 
@@ -16,7 +13,7 @@ class Report extends Model //implements ReportContract
 {
      
     //use ReportTrait;
-    use RecordSignature, Reportable, SoftDeletes , hasStatuses;
+    use  SoftDeletes , hasStatuses;
 
     protected $fillable=[
         
