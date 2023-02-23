@@ -106,6 +106,9 @@ class DashboardInstallCommand extends Command
             //Copy Event Service Provider
             copy(__DIR__ . '/../EventServiceProvider.php', app_path('Providers/EventServiceProvider.php'));
 
+            //Copy Auth Service Provider
+            copy(__DIR__ . '/../AuthServiceProvider.php', app_path('Providers/AuthServiceProvider.php'));
+
             //Copy Vite
             copy(__DIR__ . '/../../resources/vite.config.js', base_path('vite.config.js'));
 
