@@ -88,10 +88,6 @@ class DashboardInstallCommand extends Command
             (new Filesystem)->ensureDirectoryExists(app_path('Traits'));
             (new Filesystem)->copyDirectory(__DIR__ . '/../Traits', app_path('Traits/'));
 
-            //Copy Policy
-            (new Filesystem)->ensureDirectoryExists(app_path('Policies'));
-            (new Filesystem)->copyDirectory(__DIR__ . '/../Policies', app_path('Policies/'));
-
             // Copy Seeders
             (new Filesystem)->ensureDirectoryExists(base_path('database/seeders'));
             (new Filesystem)->copyDirectory(__DIR__ . '/../../database/seeders', base_path('database/seeders/'));

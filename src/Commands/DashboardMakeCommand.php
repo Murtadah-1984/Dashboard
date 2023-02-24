@@ -91,9 +91,6 @@ class DashboardMakeCommand extends Command
         //Create Request
         $this->makeRequest($model);
 
-        //Create Policy
-        $this->makePolicy($model, $table);
-
         //Create Routes
         $this->generateRoutes($controller ,$table);
 

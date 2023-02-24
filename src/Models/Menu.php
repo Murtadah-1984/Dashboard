@@ -24,7 +24,7 @@ class Menu extends Model
         self::firstOrCreate([
             'title' => "{$model}s",
             'route'=>"{$table}.index",
-            'model'=>"App\Models\{$model}",
+            'policy'=>"browse_{$table}",
             'class'=>'fas fa-clone',
             'order'=> 0
         ]);

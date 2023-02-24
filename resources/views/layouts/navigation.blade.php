@@ -19,10 +19,8 @@
                     </p>
                 </a>
             </li>
-            @foreach(App\Helpers\Menu::menu() as $menuItem)
-            @if(!is_null($menuItem->model))
-            @can('viewAny',$menuItem->model)
-            @endif
+            @foreach($menuItems as $menuItem)
+            @can($menuItem->policy)
             <li class="nav-item">
                 <a href="{{ (!$menuItem->children->isEmpty()? '#' : route($menuItem->route) )  }}" class="nav-link">
                     <i class="nav-icon {{ $menuItem->class }} nav-icon"></i>
@@ -36,7 +34,7 @@
                 @if(!$menuItem->children->isEmpty())
                 <ul class="nav nav-treeview" style="display: none;">
                     @foreach($menuItem->children as $child)
-                        @can('viewAny',$child->model)
+                        @can($child->policy)
                             <li class="nav-item">
                                 <a href="{{ route($child->route) }}" class="nav-link">
                                     <i class="{{ $child->class}} nav-icon"></i>
@@ -48,9 +46,7 @@
                 </ul>
                 @endif
             </li>
-            @if(!is_null($menuItem->model))
             @endcan
-            @endif
             @endforeach
         </ul>
     </nav>

@@ -30,7 +30,7 @@ class MenuSeeder extends Seeder
                 DB::table('menus')->insert([
                     'title' => 'Users',
                     'route'=>'users.index',
-                    'model'=>'App\Models\User',
+                    'policy'=>'browse_users',
                     'class'=>'fas fa-users',
                     'parent_id'=>1,
                     'order'=> 1
@@ -39,7 +39,7 @@ class MenuSeeder extends Seeder
                 DB::table('menus')->insert([
                     'title' => 'Roles',
                     'route'=>'roles.index',
-                    'model'=>'App\Models\Role',
+                    'policy'=>'browse_roles',
                     'class'=>'fas fa-user-tie',
                     'parent_id'=>1,
                     'order'=> 2
@@ -48,7 +48,7 @@ class MenuSeeder extends Seeder
                 DB::table('menus')->insert([
                     'title' => 'Permissions',
                     'route'=>'permissions.index',
-                    'model'=>'App\Models\Permission',
+                    'policy'=>'browse_permissions',
                     'class'=>'fas fa-user-secret',
                     'parent_id'=>1,
                     'order'=> 3
@@ -57,7 +57,7 @@ class MenuSeeder extends Seeder
                 DB::table('menus')->insert([
                     'title' => 'Menu Items',
                     'route'=>'menus.index',
-                    'model'=>'App\Models\Menu',
+                    'policy'=>'browse_menu',
                     'class'=>'fas fa-clone',
                     'parent_id'=>2,
                     'order'=> 4
@@ -66,6 +66,7 @@ class MenuSeeder extends Seeder
                 DB::table('menus')->insert([
                     'title' => 'Dashboard Configrations',
                     'route'=>'dashboard.config',
+                    'policy'=>'browse_config',
                     'class'=>'fas fa-cog',
                     'parent_id'=>2,
                     'order'=> 5

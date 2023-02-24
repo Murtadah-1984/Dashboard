@@ -13,10 +13,9 @@ class Report extends Model //implements ReportContract
 {
      
     //use ReportTrait;
-    use  SoftDeletes , hasStatuses;
 
     protected $fillable=[
-        
+        'task','details','user'
     ];
 
     protected $casts = [

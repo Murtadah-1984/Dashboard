@@ -4,6 +4,10 @@ namespace App\Providers;
 
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
+use App\Models\Permission;
+use App\Models\User;
+use Auth;
+
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -13,10 +17,7 @@ class AuthServiceProvider extends ServiceProvider
      * @var array<class-string, class-string>
      */
     protected $policies = [
-        'App\Models\User' => 'App\Policies\UserPolicy',
-        'App\Models\Menu' => 'App\Policies\MenuPolicy',
-        'App\Models\Role' => 'App\Policies\RolePolicy',
-        'App\Models\Permission' => 'App\Policies\PermissionPolicy',
+        
     ];
 
     /**
@@ -24,6 +25,14 @@ class AuthServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        $user =Auth::user();
+        $permissions=Permission::pluck('key');
+        foreach ($permissions as $permission) 
+        {
+            Gate::define($permission, function ($user) use ($permission) 
+            {
+               return $user->hasPermission($permission);
+            });
+        }
     }
 }
