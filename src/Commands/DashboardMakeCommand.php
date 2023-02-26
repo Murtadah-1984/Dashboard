@@ -91,6 +91,9 @@ class DashboardMakeCommand extends Command
         //Create Request
         $this->makeRequest($model);
 
+        //Create Resources
+        $this->makeResources($model);
+
         //Create Routes
         $this->generateRoutes($controller ,$table);
 
@@ -170,6 +173,22 @@ class DashboardMakeCommand extends Command
             '--resource' =>true
         ]));    
         $this->info('Controller Generated Successfully');
+    }
+
+    public function makeResources($model, $table)
+    {
+        $this->call('make:resource', array_filter([
+            'name' => "{$model}/{$model}Resource"
+        ]));  
+        
+        $this->call('make:resource', array_filter([
+            'name' => "{$model}/Show{$model}Resource"
+        ])); 
+
+        $this->call('make:resource', array_filter([
+            'name' => "{$model}/List{$model}Resource"
+        ])); 
+        $this->info('Resources Generated Successfully');
     }
 
     public function makeRequest($model)
