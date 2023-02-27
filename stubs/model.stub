@@ -9,13 +9,14 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Traits\RecordStampAndReport; 
 use App\Traits\hasStatuses; 
+use App\Traits\User as UserTrait; 
 
 
 class {{ class }} extends Model //implements {{ class }}Contract
 {
      
     //use {{ class }}Trait;
-    use RecordStampAndReport, SoftDeletes , hasStatuses;
+    use RecordStampAndReport, SoftDeletes , hasStatuses, UserTrait;
 
     protected $fillable=[
         
