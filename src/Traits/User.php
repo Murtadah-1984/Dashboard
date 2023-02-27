@@ -21,4 +21,9 @@ trait User
     {
         return $this->belongsTo(UserModel::class, 'deleted_by');
     }
+
+    public function isDeleted()
+    {
+        return $this->deleted_at != null;
+    }
 }
