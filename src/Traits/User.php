@@ -2,24 +2,31 @@
 
 namespace App\Traits;
 
-use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
 use App\Models\User as UserModel;
+use Illuminate\Database\Eloquent\Casts\Attribute;
+
 
 trait User
 {
-    public function createdBy()
+    public function createdBy(): Attribute
     {
-        return $this->belongsTo(UserModel::class, 'created_by');
+        return new Attribute(
+            get: fn ($value) => UserModel::find($value)->name
+        );
     }
 
     public function updatedBy()
     {
-        return $this->belongsTo(UserModel::class, 'updated_by');
+        return new Attribute(
+            get: fn ($value) => UserModel::find($value)->name
+        );
     }
 
     public function deletedBy()
     {
-        return $this->belongsTo(UserModel::class, 'deleted_by');
+        return new Attribute(
+            get: fn ($value) => UserModel::find($value)->name
+        );
     }
 
     public function isDeleted()
