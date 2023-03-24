@@ -35,12 +35,12 @@ class AppServiceProvider extends ServiceProvider
     {
         Paginator::useBootstrap();
         Schema::defaultStringLength(191);
-        View::share('menuItems', Menu::whereNull('parent_id')->get());
+        View::share('menuItems', Menu::with('children')->whereNull('parent_id')->get());
         Storage::extend('dropbox', function (Application $app, array $config) {
             $adapter = new DropboxAdapter(new DropboxClient(
                 $config['authorization_token']
             ));
- 
+
             return new FilesystemAdapter(
                 new Filesystem($adapter, $config),
                 $adapter,

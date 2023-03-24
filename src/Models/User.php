@@ -2,8 +2,8 @@
 
 namespace App\Models;
 
-use Carbon\Carbon;
-use Hash;
+
+use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -12,12 +12,23 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Contracts\UserContract;
 use App\Traits\DashboardUser;
 use App\Traits\RecordStampAndReport;
+use App\Traits\UserTrait;
+use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable implements UserContract
 {
-    use DashboardUser, RecordStampAndReport, SoftDeletes, HasFactory, Notifiable;
+    use DashboardUser, RecordStampAndReport, SoftDeletes, HasFactory, Notifiable , UserTrait, HasApiTokens;
+
 
     protected $guarded = [];
+
+    static $searchable = ['name','email'];
+
+    protected $casts = [
+        'created_at' => 'datetime:d-m-Y',
+        'updated_at' => 'datetime:d-m-Y',
+        'deleted_at' => 'datetime:d-m-Y',
+    ];
 
     public $additional_attributes = ['locale'];
 
@@ -34,6 +45,7 @@ class User extends Authenticatable implements UserContract
         );
     }
 
+
     public function locale(): Attribute
     {
         return new Attribute(
@@ -42,7 +54,7 @@ class User extends Authenticatable implements UserContract
         );
     }
 
-    protected function title(): Attribute
+    protected function password(): Attribute
     {
         return new Attribute(
             set: fn ($value) => Hash::make($value),
@@ -53,5 +65,10 @@ class User extends Authenticatable implements UserContract
     {
         return UserFactory::new();
     }
-    
+
+    public function scopeDeleted($query)
+    {
+        return $query->whereNotNull('deleted_at');
+    }
+
 }

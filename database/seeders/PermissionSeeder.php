@@ -18,7 +18,6 @@ class PermissionSeeder extends Seeder
     public function run(): void
     {
         $admin=Role::find(1);
-        $keys=['browse_','read_','edit_','add_','delete_','restore_','foreceDelete_'];
         $tables = DB::select('SHOW TABLES');
         $ignoredTables=[
             "failed_jobs",
@@ -32,13 +31,9 @@ class PermissionSeeder extends Seeder
         $tableNameResolver="Tables_in_".env('DB_DATABASE');
 
         foreach($tables as $table){
-            foreach($keys as $key){
-                if(!in_array($table->$tableNameResolver,$ignoredTables)){
-                    DB::table('permissions')->insert([
-                        'key' => $key.$table->$tableNameResolver,
-                        'table_name' => $table->$tableNameResolver
-                    ]);
-                }
+            if(!in_array($table->$tableNameResolver,$ignoredTables)){
+                    Permission::generateFor($table);
+                
             }
         }
         $permissions=Permission::all();

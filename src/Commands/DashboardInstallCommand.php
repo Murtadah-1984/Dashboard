@@ -62,6 +62,9 @@ class DashboardInstallCommand extends Command
             $this->call('octane:install',[
                 '--server'=>'roadrunner',
             ]);
+
+            // Install Laravel munafio/chatify
+            $this->call('chatify:install');
             
             //Copy Controllers
             (new Filesystem)->copyDirectory(__DIR__ . '/../Http/Controllers', app_path('Http/Controllers/'));

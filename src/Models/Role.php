@@ -16,6 +16,8 @@ class Role extends Model
 
     protected $guarded = [];
 
+    static $searchable = ['name'];
+
     public function users()
     {
         $userModel = User::class;

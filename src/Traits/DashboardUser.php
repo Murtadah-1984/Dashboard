@@ -16,7 +16,7 @@ trait DashboardUser
      */
     public function role()
     {
-        return $this->belongsTo(Role::class);
+        return $this->belongsTo(Role::class,'role_id');
     }
 
     /**
@@ -126,7 +126,7 @@ trait DashboardUser
 
     public function disable()
     {
-        $this->update(['role_id'=> null]);
+        $this->setRole('disabled user');
         $this->roles()->detach();
     }
 

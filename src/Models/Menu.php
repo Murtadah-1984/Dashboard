@@ -6,17 +6,26 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Traits\RecordStampAndReport;
 
-class Menu extends Model 
+class Menu extends Model
 {
     use RecordStampAndReport, SoftDeletes;
-   
+
     protected $fillable=[
-        "title", "route", "model", "class", "parent_id", "order"
+        "title", "route", "policy", "class", "parent_id", "order"
+    ];
+
+    static $searchable=[
+        "title", "route", "policy", "class", "parent_id", "order"
     ];
     public function children()
     {
-        return $this->hasMany(\App\Models\Menu::class, 'parent_id')
+        return $this->hasMany(self::class, 'parent_id')
             ->with('children');
+    }
+
+    public function parent()
+    {
+        return $this->belongsTo(self::class, 'parent_id');
     }
 
     public static function generate($model, $table)

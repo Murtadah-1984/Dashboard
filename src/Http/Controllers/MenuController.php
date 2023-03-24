@@ -2,78 +2,143 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\RedirectResponse;
+
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Models\Menu;
+use App\Http\Requests\Menu\StoreRequest;
+use App\Http\Requests\Menu\UpdateRequest;
+use Illuminate\Support\Facades\Gate;
+
+
 
 class MenuController extends Controller
 {
-     /**
-     * Create the controller instance.
-     */
-    public function __construct()
-    {
-        $this->authorizeResource(Menu::class, 'menu');
-    }
+
     /**
      * Display a listing of the resource.
      */
-    public function index(): Response
+    public function index()
     {
-        $menus = Menu::all();
-        return view('setting.menus.index', compact('menus'));
+        abort_if(Gate::denies('browse_menus'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+
+        if(request()->ajax()) {
+            if (request()->has('scope')) {
+                $scopeName = request()->input('scope');
+                $menus=Menu::withTrashed()->with('parent:id,title')->$scopeName();
+            }else{
+                $menus=Menu::withTrashed()->with('parent:id,title');
+            }
+            return dataTables($menus)
+                ->addColumn('checkbox', function($data){
+                    return '<input type="checkbox"  class="checkbox" value="'.$data->id.'" name="checkbox[]" data-id="'.$data->id.'" >';
+                })
+                ->addColumn('action', function($data){
+                    return view('menus.action', compact('data'));
+                })
+                ->rawColumns(['action','checkbox'])
+                ->addIndexColumn()
+                ->make(true);
+        }
+
+        return view('menus.index');
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Create a list that will be used for listing users.
      */
-    public function create(): Response
+    public function create(): JsonResponse
     {
-        return view('setting.menus.create');
+        if (request()->has('scopes')) {
+            // Get the global scopes defined on the Vendor model
+            return Response()->json($this->getModelScopes('Menu'));
+        }
+        elseif(request()->has('q')){
+            $search = request()->q;
+            $menu =Menu::select("id","title as text")
+                ->where('title','LIKE',"%$search%")
+                ->get()
+                ->toArray();
+        }else{
+            $menu = Menu::select("id","title as text")
+                ->get()->toArray();
+        }
+
+        return Response()->json($menu);
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request): RedirectResponse
+    public function store(Request $request): JsonResponse
     {
-        $menu = Menu::create($request->all());
-        return redirect()->route('setting.menus.index');
+        abort_if(Gate::denies('add_menus'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+
+        if($request->filled('id'))
+        {
+            $request=app(UpdateRequest::class);
+            $menu=Menu::find($request->id);
+            $menu->update([
+                "title"=>$request->title,
+                "route"=>$request->route,
+                "policy"=>$request->policy,
+                "class"=>$request->class,
+                "parent_id"=>$request->parent_id,
+                "order"=>$request->order,
+            ]);
+            $message= $menu->title." Updated Successfully";
+
+        }
+        else{
+            $request=app(StoreRequest::class);
+            $menu=Menu::create([
+                "title"=>$request->title,
+                "route"=>$request->route,
+                "policy"=>$request->policy,
+                "class"=>$request->class,
+                "parent_id"=>$request->parent_id,
+                "order"=>$request->order,
+            ]);
+            $message= $menu->title." Created Successfully";
+        }
+        return Response()->json(['message'=>$message]);
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Menu $menu): Response
+    public function show(Menu $menu): JsonResponse
     {
-        return view('setting.menus.show');
+        abort_if(Gate::denies('read_menus'), JsonResponse::HTTP_FORBIDDEN, '403 Forbidden');
+
+        return response()->json(Menu::with(['parent:id,title','children'])->find($menu->id));
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Menu $menu): Response
+    public function edit(Menu $menu): JsonResponse
     {
-        return view('setting.menu.edit', compact('menu'));
+        abort_if(Gate::denies('edit_menus'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+
+        return Response()->json(Menu::with('parent:id,title')->find($menu->id));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Menu $menu): RedirectResponse
-    {
-        $menu->update($request->all());
-        return redirect()->route('setting.menus.index');
-    }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Menu $menu): RedirectResponse
+    public function destroy(Menu $menu): JsonResponse
     {
+        abort_if(Gate::denies('delete_menus'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+
         $menu->delete();
-        return back();
+
+        $message= $menu->title." Deleted Successfully";
+
+        return Response()->json(['message'=>$message]);
     }
+
 }
 

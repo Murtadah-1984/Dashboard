@@ -20,9 +20,23 @@
                 <div class="col-lg-12">
                     <div class="card">
                         <div class="card-body">
-                            <p class="card-text">
-                                {{ __('You are logged in!') }}
-                            </p>
+                            <div class="MultiCarousel" data-items="1,3,5,6" data-slide="1" id="MultiCarousel"  data-interval="1000">
+                                <div class="MultiCarousel-inner">
+                                    <div class="item">
+                                        <div class="col-md-3 col-sm-6 col-12">
+                                            <div class="info-box">
+                                                <span class="info-box-icon bg-info"><i class="far fa-star"></i></span>
+                                                <div class="info-box-content">
+                                                    <span class="info-box-text">Total Records</span>
+                                                    <span class="info-box-number">0</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <button class="btn btn-primary leftLst"><</button>
+                                    <button class="btn btn-primary rightLst">></button>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

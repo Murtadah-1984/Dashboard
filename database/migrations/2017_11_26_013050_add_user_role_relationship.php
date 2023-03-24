@@ -14,7 +14,12 @@ class AddUserRoleRelationship extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            //$table->bigInteger('role_id')->unsigned()->change();
+            $type = DB::connection()->getDoctrineColumn(DB::getTablePrefix().'users', 'role_id')->getType()->getName();
+            if ($type == 'bigint') {
+                $table->bigInteger('role_id')->unsigned()->change();
+            } else {
+                $table->integer('role_id')->unsigned()->change();
+            }
             $table->foreign('role_id')->references('id')->on('roles');
         });
     }
