@@ -23,7 +23,7 @@ class DashboardInstallCommand extends Command
      *
      * @var string
      */
-    protected $description = 'Install one of the Larastarters Themes';
+    protected $description = 'Install Murtadah Haddad base dashboard that have users and roles with permissions also it will generate views and models';
 
     /**
      * The artisan command to run. Default is php.
@@ -63,25 +63,19 @@ class DashboardInstallCommand extends Command
                 '--server'=>'roadrunner',
             ]);
 
-            // Install Laravel munafio/chatify
-            $this->call('chatify:install');
             
             //Copy Controllers
             (new Filesystem)->copyDirectory(__DIR__ . '/../Http/Controllers', app_path('Http/Controllers/'));
+
+            //Copy Request
+            (new Filesystem)->ensureDirectoryExists(app_path('Http/Requests'));
+            (new Filesystem)->copyDirectory(__DIR__ . '/../Http/requests', app_path('Http/Requests/'));
 
             //Copy Models
             (new Filesystem)->copyDirectory(__DIR__ . '/../Models', app_path('Models/'));
 
             //Copy Route
             (new Filesystem)->copyDirectory(__DIR__ . '/../../routes', base_path('routes/'));
-
-            //Copy Request
-            (new Filesystem)->ensureDirectoryExists(app_path('Http/Requests'));
-            (new Filesystem)->copyDirectory(__DIR__ . '/../Http/requests', app_path('Http/Requests/'));
-
-            //Copy Helpers
-            (new Filesystem)->ensureDirectoryExists(app_path('Helpers'));
-            (new Filesystem)->copyDirectory(__DIR__ . '/../Helpers', app_path('Helpers/'));
 
             //Copy Contract
             (new Filesystem)->ensureDirectoryExists(app_path('Contracts'));
@@ -94,6 +88,9 @@ class DashboardInstallCommand extends Command
             // Copy Seeders
             (new Filesystem)->ensureDirectoryExists(base_path('database/seeders'));
             (new Filesystem)->copyDirectory(__DIR__ . '/../../database/seeders', base_path('database/seeders/'));
+
+            //Copy views
+            (new Filesystem)->copyDirectory(__DIR__ . '/../../resources/views', resource_path('views'));
 
             //Copy Stubs
             (new Filesystem)->ensureDirectoryExists(base_path('stubs'));
@@ -174,10 +171,6 @@ class DashboardInstallCommand extends Command
         copy(__DIR__ . '/../../resources/views/home.blade.php', resource_path('views/home.blade.php'));
         copy(__DIR__ . '/../../resources/views/about.blade.php', resource_path('views/about.blade.php'));
         copy(__DIR__ . '/../../resources/js/bootstrap.js', resource_path('js/bootstrap.js'));
-
-        // Demo table
-        (new Filesystem)->ensureDirectoryExists(resource_path('views/users'));
-        copy(__DIR__ . '/../../resources/views/users/index.blade.php', resource_path('views/users/index.blade.php'));
 
         $this->runCommands(['npm install','npm i laravel-datatables-vite --save-dev' ]);
         file_put_contents(

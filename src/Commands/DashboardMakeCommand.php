@@ -58,7 +58,7 @@ class DashboardMakeCommand extends Command
         $model=Str::ucfirst(Str::singular(Str::studly($table)));
         $controller=Str::remove(' ',str($model)->append('Controller'));
 
-        //Create Trait and C0ntract
+        //Create Trait and Contract
         if($traitContract == 'yes')
         {
             //Create Contract
@@ -98,7 +98,7 @@ class DashboardMakeCommand extends Command
         $this->generateRoutes($controller ,$table);
 
         //Create Views
-        $this->generateViews($model);
+        $this->generateViews($table);
 
         //Create Permissions
         $this->generatePermissions($model);
@@ -194,25 +194,16 @@ class DashboardMakeCommand extends Command
     public function makeRequest($model)
     {
         $this->call('make:request', [
-            'name' => "Store/Store{$model}Request",
+            'name' => "{$model}/StoreRequest",
         ]);
 
         $this->call('make:request', [
-            'name' => "Update/Update{$model}Request",
+            'name' => "{$model}/UpdateRequest",
         ]);
 
         $this->info('Request Generated Successfully');
     }
 
-    public function makePolicy($model, $table)
-    {
-        $this->call('make:policy', [
-            'name' => "{$model}Policy",
-            '--model' =>$model,
-        ]);
-        
-        $this->info('Policy Generated Successfully');
-    }
 
     public function makeContract($model)
     {
@@ -252,22 +243,25 @@ class DashboardMakeCommand extends Command
         $controllerClass="\App\Http\Controllers\\$controller::class";
         $line0="// $table Routes"."\n";
         $line1="Route::middleware('auth')->group(function () {"."\n";
-        $line2="Route::post('$table/restore', [$controllerClass, 'restore'])->name('$table.restore');"."\n";
-        $line3="Route::resource('{$table}', {$controllerClass});"."\n";
-        $line4="});"."\n";
+        $line2="Route::resource('{$table}', {$controllerClass});"."\n";
+        $line3="});"."\n";
         file_put_contents(
             base_path('routes/web.php'),
-            $line0.$line1.$line2.$line3.$line4
+            $line0.$line1.$line2.$line3
             ,
             FILE_APPEND
         );
         $this->info('Routes Generated Successfully');
     }
 
-    public function generateViews($model)
+    public function generateViews($table)
     {
-        (new Filesystem)->ensureDirectoryExists(resource_path("views/{$model}s"));
-        copy(base_path('stubs/index.blade.php'), resource_path("views/{$model}s/index.blade.php"));
+        (new Filesystem)->ensureDirectoryExists(resource_path("views/{$table}s"));
+        copy(base_path('stubs/index.blade.php'), resource_path("views/{$table}s/index.blade.php"));
+        copy(base_path('stubs/view.blade.php'), resource_path("views/{$table}s/view.blade.php"));
+        copy(base_path('stubs/add.blade.php'), resource_path("views/{$table}s/add.blade.php"));
+        copy(base_path('stubs/edit.blade.php'), resource_path("views/{$table}s/edit.blade.php"));
+        copy(base_path('stubs/action.blade.php'), resource_path("views/{$table}s/action.blade.php"));
 
         $this->info('Views Generated Successfully');
     }

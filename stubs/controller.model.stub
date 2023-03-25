@@ -3,91 +3,133 @@
 namespace {{ namespace }};
 
 use {{ namespacedModel }};
-use {{ rootNamespace }}Http\Controllers\Controller;
+use App\Http\Controllers\DashboardBaseController;
+use Illuminate\Support\Facades\Gate;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Response;
 use {{ namespacedRequests }}
 use App\Charts\{{ model }}Chart;
-use App\Http\Requests\Store\Store{{ model }}Request;
-use App\Http\Requests\Update\Update{{ model }}Request;
-use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Response;
+use App\Http\Requests\{{ model }}\StoreRequest;
+use App\Http\Requests\{{ model }}\UpdateRequest;
 
-class {{ class }} extends Controller
+
+
+class {{ class }} extends DashboardBaseController
 {
-     /**
-     * Create the controller instance.
-     */
-    public function __construct()
-    {
-        $this->authorizeResource({{ model }}::class, "{{ model }}");
-    }
     /**
      * Display a listing of the resource.
      */
     public function index({{ model }}Chart $chart): Response
     {
-        ${{ model }}s={{ model }}::withTrashed()->get();
-        return view('{{ model }}s.index',compact('chart','{{ model }}s'));
+        // Check if user is authorized to browse {{table}}, otherwise abort with 403 Forbidden
+        abort_if(Gate::denies('browse_{{ modelVariable }}s'), 403, response()->json(['message' => 'You are not authorized to browse {{ modelVariable }}s'], 403));
+        // Define the columns to be displayed in the DataTable
+        $columns=json_encode(['name']);
+
+        // If the request is made through AJAX, retrieve the users data and return it as a JSON response
+        if(request()->ajax()) {
+            if (request()->has('scope')) {
+                $scopeName = request()->input('scope');
+                ${{ modelVariable }}s={{ model }}::withTrashed()->with(['relation:id,name'])->$scopeName();
+            }else{
+                ${{ modelVariable }}s={{ model }}::withTrashed()->with(['relation:id,name']);
+            }
+            return dataTables(${{ modelVariable }}s)
+                ->addColumn('checkbox', function($data){
+                    return '<input type="checkbox"  class="checkbox" value="'.$data->id.'" name="checkbox[]" data-id="'.$data->id.'" >';
+                })
+                
+                ->addColumn('action', function($data){
+                    return view('users.action', compact('data'));
+                })
+                ->rawColumns(['action','checkbox'])
+                ->addIndexColumn()
+                ->make(true);
+        }
+        // If the request is not made through AJAX, return a view that renders the DataTable
+        return view('{{ modelVariable }}s.index',compact('columns'));
     }
 
     /**
      * Show the form for creating a new resource.
      */
-    public function create(): Response
+    public function create(): JsonResponse
     {
-        //
+        if (request()->has('scopes')) {
+            // Get the global scopes defined on the Vendor model
+            return Response()->json($this->getModelScopes('{{model}}'));
+        }else if(request()->has('q'))
+        {
+            $search = request()->q;
+            ${{ modelVariable }}s = {{model}}::select("id", "name as text")
+                ->where('name', 'LIKE', "%$search%")
+                ->get()
+                ->toArray();
+        }else
+        {
+            ${{ modelVariable }}s={{model}}::select("id","name as text")
+                ->get()->toArray();
+        }
+        return Response()->json(${{ modelVariable }}s);
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Store{{ model }}Request $request): RedirectResponse
+    public function store(Request $request): JsonResponse
     {
-        ${{ model }}={{ model }}::create($request->all());
-        return redirect()->route('{{ model }}s.index')->with('message','{{ model }} Created Successfully');
+        abort_if(Gate::denies('add_{{table}}'), 403, response()->json(['message' => 'You are not authorized to add {{table}}'], 403));
+
+        if($request->filled('id'))
+        {
+            $request=app(UpdateRequest::class);
+            ${{ modelVariable }}={{model}}::find($request->id);
+            ${{ modelVariable }}->update([
+                "name"=>$request->name, 
+            ]);
+            $message= ${{ modelVariable }}->name." Updated Successfully";
+        }else
+        {
+            $request=app(StoreRequest::class);
+            ${{ modelVariable }}={{model}}::create([
+                "name"=>$request->name,
+                
+            ]);
+            $message= ${{ modelVariable }}->name." Created Successfully";
+        }
+        return Response()->json(['message'=>$message]);
     }
 
     /**
      * Display the specified resource.
      */
-    public function show({{ model }} ${{ modelVariable }}): Response
+    public function show({{ model }} ${{ modelVariable }}): JsonResponse
     {
-        ${{ model }}={{ model }}::withTrashed()->find(${{ modelVariable }});
-        return Response::json(${{ model }});
+        abort_if(Gate::denies('read_{{table}}'), 403, response()->json(['message' => 'You are not authorized to read {{table}}'], 403));
+        return response()->json(User::with({{relations}})->find(${{ modelVariable }}));
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit({{ model }} ${{ modelVariable }}): Response
+    public function edit({{ model }} ${{ modelVariable }}): JsonResponse
     {
-        ${{ model }}={{ model }}::withTrashed()->find(${{ modelVariable }});
-        return Response::json(${{ model }});
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Update{{ model }}Request $request, {{ model }} ${{ modelVariable }}): RedirectResponse
-    {
-        ${{ modelVariable }}->update($request->all());
-        return redirect()->route('{{ model }}s.index')->with('message','{{ model }} Updated Successfully');
+       abort_if(Gate::denies('edit_{{table}}'), 403, response()->json(['message' => 'You are not authorized to edit {{table}}'], 403));
+        return response()->json(User::with({{relations}})->find(${{ modelVariable }}));
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy({{ model }} ${{ modelVariable }}): RedirectResponse
+    public function destroy({{ model }} ${{ modelVariable }}): JsonResponse
     {
+        abort_if(Gate::denies('delete_{{table}}'), 403, response()->json(['message' => 'You are not authorized to delete {{table}}'], 403));
+
         ${{ modelVariable }}->delete();
-        return back()->with('message','{{ model }} is Deleted Successfully');
+
+        $message= ${{ modelVariable }}->name." Deleted Successfully";
+
+        return Response()->json(['message'=>$message]);
     }
 
-    /**
-     * Restore the specified resource from trash.
-     */
-    public function restore({{ model }} ${{ modelVariable }}): RedirectResponse
-    {
-        {{ model }} ::withTrashed()->find(${{ modelVariable }})->restore();
-        return redirect()->route('{{ model }}s.index')->with('message','{{ model }} Restored Successfully');
-    }
 }

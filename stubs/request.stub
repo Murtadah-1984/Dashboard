@@ -3,6 +3,13 @@
 namespace {{ namespace }};
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Gate;
+use Spatie\ValidationRules\Rules\Authorized;
+use Spatie\ValidationRules\Rules\CountryCode;
+use Spatie\ValidationRules\Rules\Currency;
+use Spatie\ValidationRules\Rules\Enum;
+use Spatie\ValidationRules\Rules\ModelsExist;
+use Spatie\ValidationRules\Rules\Delimited;
 
 class {{ class }} extends FormRequest
 {
@@ -11,9 +18,7 @@ class {{ class }} extends FormRequest
      */
     public function authorize(): bool
     {
-        // return $user->hasPermission('add_User');
-        // return $user->hasPermission('edit_User');
-        return false;
+       return  Gate::allows('add_');
     }
 
     /**

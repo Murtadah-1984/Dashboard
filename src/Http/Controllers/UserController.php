@@ -96,14 +96,8 @@ class UserController extends DashboardBaseController
                 "role_id"=>$request->role_id,
             ]);
             $message= $user->name." Updated Successfully";
-            $user->roles()->sync($request->input('roles', []));
 
-        }elseif($request->filled('scopeName'))
-        {
-            User::addDynamicMethod($request->scopeName,$request->scopeBody);
-            $message=$request->scopeName." Created Successfully";
-        }
-        else
+        }else
         {
             $request=app(StoreRequest::class);
             $user=User::create([
@@ -113,11 +107,11 @@ class UserController extends DashboardBaseController
                 'password' => Hash::make($request->password)
             ]);
             $message= $user->name." Created Successfully";
-            $user->roles()->sync($request->input('roles', []));
+           
         }
 
 
-
+        $user->roles()->sync($request->input('roles', []));
         return Response()->json(['message'=>$message]);
     }
 
