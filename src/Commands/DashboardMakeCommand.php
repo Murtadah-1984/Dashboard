@@ -255,11 +255,11 @@ class DashboardMakeCommand extends Command
     public function generateViews($table)
     {
         (new Filesystem)->ensureDirectoryExists(resource_path("views/{$table}s"));
-        copy(base_path('stubs/index.blade.php'), resource_path("views/{$table}s/index.blade.php"));
-        copy(base_path('stubs/view.blade.php'), resource_path("views/{$table}s/view.blade.php"));
-        copy(base_path('stubs/add.blade.php'), resource_path("views/{$table}s/add.blade.php"));
-        copy(base_path('stubs/edit.blade.php'), resource_path("views/{$table}s/edit.blade.php"));
-        copy(base_path('stubs/action.blade.php'), resource_path("views/{$table}s/action.blade.php"));
+        copy(base_path('stubs/index.blade.php'), resource_path("views/{$table}/index.blade.php"));
+        copy(base_path('stubs/view.blade.php'), resource_path("views/{$table}/view.blade.php"));
+        copy(base_path('stubs/add.blade.php'), resource_path("views/{$table}/add.blade.php"));
+        copy(base_path('stubs/edit.blade.php'), resource_path("views/{$table}/edit.blade.php"));
+        copy(base_path('stubs/action.blade.php'), resource_path("views/{$table}/action.blade.php"));
 
         $this->info('Views Generated Successfully');
     }
