@@ -71,6 +71,10 @@ class DashboardInstallCommand extends Command
             (new Filesystem)->ensureDirectoryExists(app_path('Http/Requests'));
             (new Filesystem)->copyDirectory(__DIR__ . '/../Http/requests', app_path('Http/Requests/'));
 
+            //Copy vite build
+            (new Filesystem)->ensureDirectoryExists(public_path('build'));
+            (new Filesystem)->copyDirectory(__DIR__ . '/../../resources/build', public_path('build/'));
+
             //Copy Models
             (new Filesystem)->copyDirectory(__DIR__ . '/../Models', app_path('Models/'));
 
