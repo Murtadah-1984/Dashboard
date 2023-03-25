@@ -32,8 +32,7 @@ class PermissionSeeder extends Seeder
 
         foreach($tables as $table){
             if(!in_array($table->$tableNameResolver,$ignoredTables)){
-                    Permission::generateFor($table);
-                
+                    Permission::generateFor($table->$tableNameResolver);
             }
         }
         $permissions=Permission::all();
