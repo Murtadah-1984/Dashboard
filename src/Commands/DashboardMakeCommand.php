@@ -268,7 +268,7 @@ class DashboardMakeCommand extends Command
     {
         $permissions=Permission::generateFor($table_name);
 
-        Role::find(1)->permissions()->attach($permission);
+        Role::find(1)->permissions()->attach($permissions);
 
         $this->info('Permissions Generated Successfully');
     }
