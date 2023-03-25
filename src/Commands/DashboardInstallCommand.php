@@ -90,7 +90,7 @@ class DashboardInstallCommand extends Command
             (new Filesystem)->copyDirectory(__DIR__ . '/../../database/seeders', base_path('database/seeders/'));
 
             //Copy views
-            (new Filesystem)->copyDirectory(__DIR__ . '/../../resources/views', resource_path('views'));
+            (new Filesystem)->copyDirectory(__DIR__ . '/../../resources/views', resource_path('views/'));
 
             //Copy Stubs
             (new Filesystem)->ensureDirectoryExists(base_path('stubs'));
