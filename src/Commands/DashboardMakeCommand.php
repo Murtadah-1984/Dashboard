@@ -9,6 +9,7 @@ use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
 use Symfony\Component\Process\Process;
 use App\Models\Permission;
+use App\Models\Role;
 use App\Models\Menu;
 
 class DashboardMakeCommand extends Command
@@ -90,9 +91,6 @@ class DashboardMakeCommand extends Command
 
         //Create Request
         $this->makeRequest($model);
-
-        //Create Resources
-        $this->makeResources($model);
 
         //Create Routes
         $this->generateRoutes($controller ,$table);
@@ -268,7 +266,9 @@ class DashboardMakeCommand extends Command
 
     public function generatePermissions($table_name)
     {
-        Permission::generateFor($table_name);
+        $permissions=Permission::generateFor($table_name);
+
+        Role::find(1)->permissions()->attach($permission);
 
         $this->info('Permissions Generated Successfully');
     }

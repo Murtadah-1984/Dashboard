@@ -30,6 +30,8 @@ class PermissionSeeder extends Seeder
         ];
         $tableNameResolver="Tables_in_".env('DB_DATABASE');
 
+        Permission::firstOrCreate(['key' => 'browse_config', 'table_name' => 'none']);
+
         foreach($tables as $table){
             if(!in_array($table->$tableNameResolver,$ignoredTables)){
                     Permission::generateFor($table->$tableNameResolver);
