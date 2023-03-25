@@ -9,7 +9,8 @@ use App\Models\Role;
 
 class Permission extends Model
 {
-    use RecordStampAndReport, SoftDeletes;
+    //use RecordStampAndReport;
+    use SoftDeletes;
 
     protected $guarded = [];
 

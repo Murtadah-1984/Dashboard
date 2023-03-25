@@ -12,7 +12,8 @@ use App\Models\Permission;
 
 class Role extends Model
 {
-    use HasFactory, RecordStampAndReport, SoftDeletes;
+    use HasFactory, SoftDeletes;
+    //use RecordStampAndReport;
 
     protected $guarded = [];
 

@@ -8,7 +8,8 @@ use App\Traits\RecordStampAndReport;
 
 class Menu extends Model
 {
-    use RecordStampAndReport, SoftDeletes;
+    //use RecordStampAndReport;
+    use SoftDeletes;
 
     protected $fillable=[
         "title", "route", "policy", "class", "parent_id", "order"

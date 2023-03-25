@@ -169,7 +169,6 @@ class DashboardInstallCommand extends Command
         (new Filesystem)->copyDirectory(__DIR__ . '/../../resources/webfonts', public_path('webfonts'));
 
         copy(__DIR__ . '/../../resources/views/home.blade.php', resource_path('views/home.blade.php'));
-        copy(__DIR__ . '/../../resources/views/about.blade.php', resource_path('views/about.blade.php'));
         copy(__DIR__ . '/../../resources/js/bootstrap.js', resource_path('js/bootstrap.js'));
 
         $this->runCommands(['npm install','npm i laravel-datatables-vite --save-dev' ]);

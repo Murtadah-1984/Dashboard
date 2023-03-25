@@ -17,8 +17,8 @@ use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable implements UserContract
 {
-    use DashboardUser, RecordStampAndReport, SoftDeletes, HasFactory, Notifiable , UserTrait, HasApiTokens;
-
+    use DashboardUser, SoftDeletes, HasFactory, Notifiable , UserTrait, HasApiTokens;
+    //use RecordStampAndReport;
 
     protected $guarded = [];
 
