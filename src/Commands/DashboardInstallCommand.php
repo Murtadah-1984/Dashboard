@@ -118,11 +118,6 @@ class DashboardInstallCommand extends Command
             // Copy Dashboard Config File 
             copy(__DIR__ . '/../../config/dashboard.php', config_path('dashboard.php'));
 
-            // Migratation
-            $this->call('migrate:fresh',[
-                '--seed'=>true,
-            ]);
-
             // Publish config for spatie/ news letter
             $this->call('vendor:publish',[
                 '--tag'=>"newsletter-config",
@@ -130,6 +125,11 @@ class DashboardInstallCommand extends Command
 
             
             $this->replaceWithAdminLTETheme();
+
+            // Migratation
+            $this->call('migrate:fresh',[
+                '--seed'=>true,
+            ]);
             
 
         
