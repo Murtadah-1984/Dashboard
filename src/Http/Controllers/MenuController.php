@@ -7,8 +7,8 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Models\Menu;
-use App\Http\Requests\Menu\StoreRequest;
-use App\Http\Requests\Menu\UpdateRequest;
+use App\Http\Requests\Store\StoreMenuRequest;
+use App\Http\Requests\Update\UpdateMenuRequest;
 use Illuminate\Support\Facades\Gate;
 
 
@@ -77,7 +77,7 @@ class MenuController extends Controller
 
         if($request->filled('id'))
         {
-            $request=app(UpdateRequest::class);
+            $request=app(UpdateMenuRequest::class);
             $menu=Menu::find($request->id);
             $menu->update([
                 "title"=>$request->title,
@@ -91,7 +91,7 @@ class MenuController extends Controller
 
         }
         else{
-            $request=app(StoreRequest::class);
+            $request=app(StoreMenuRequest::class);
             $menu=Menu::create([
                 "title"=>$request->title,
                 "route"=>$request->route,

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests\Menu;
+namespace App\Http\Requests\Update;
 
 use App\Models\Role;
 use Illuminate\Support\Facades\Gate;
@@ -8,7 +8,7 @@ use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 use Symfony\Component\HttpFoundation\Response;
 
-class UpdateRequest extends FormRequest
+class UpdatePermissionRequest extends FormRequest
 {
     public function authorize()
     {
@@ -18,23 +18,14 @@ class UpdateRequest extends FormRequest
     public function rules()
     {
         return [
-            'title' => [
+            'key' => [
                 'required',
-                Rule::unique('menus')->ignore(request()->id),
+                Rule::unique('permissions')->ignore(request()->id),
                 'max:80',
             ],
-            'route' => [
+            'table_name' => [
                 'required',
-                Rule::unique('menus')->ignore(request()->id),
-                'max:100',
-            ],
-            'policy' => [
-                'required',
-                'max:100',
-            ],
-            'class' => [
-                'required',
-                'max:100',
+                'max:60',
             ],
         ];
     }

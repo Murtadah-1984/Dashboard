@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 
 use Illuminate\Support\Facades\Hash;
-use App\Http\Requests\ProfileUpdateRequest;
+use App\Http\Requests\Update\ProfileUpdateRequest;
 
 class ProfileController extends Controller
 {

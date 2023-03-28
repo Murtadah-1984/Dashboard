@@ -2,11 +2,10 @@
 
 namespace App\Http\Resources;
 
-use App\Http\Resources\RoleResource;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class UserResource extends JsonResource
+class MenuResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -17,12 +16,14 @@ class UserResource extends JsonResource
     {
         return [
             'id'=>$this->id,
-            'name'=>$this->name,
-            'email'=>$this->email,
-            'role'=>new RoleResource($this->whenLoaded('role')),
-            'roles'=>RoleResource::collection($this->whenLoaded('roles')),
+            'title'=>$this->title,
+            'route'=>$this->route,
+            'policy'=>$this->policy,
+            'class'=>$this->class,
+            'order'=>$this->order,
+            'parent'=>new MenuResource($this->whenLoaded('parent')),
+            'children'=>MenuResource::collection($this->whenLoaded('children')),
             'isDeleted'=>$this->isDeleted()
         ];
     }
 }
-//$this->when($request->routeIs('users.*'), function(){ $this->email})

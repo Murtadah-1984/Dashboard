@@ -9,8 +9,8 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
 use {{ namespacedRequests }}
 use App\Charts\{{ model }}Chart;
-use App\Http\Requests\{{ model }}\StoreRequest;
-use App\Http\Requests\{{ model }}\UpdateRequest;
+use App\Http\Requests\Store\Store{{ model }}Request;
+use App\Http\Requests\Update\Update{{ model }}Request;
 
 
 
@@ -82,7 +82,7 @@ class {{ class }} extends DashboardBaseController
 
         if($request->filled('id'))
         {
-            $request=app(UpdateRequest::class);
+            $request=app(Update{{ model }}Request::class);
             ${{ modelVariable }}={{model}}::find($request->id);
             ${{ modelVariable }}->update([
                 "name"=>$request->name, 
@@ -90,7 +90,7 @@ class {{ class }} extends DashboardBaseController
             $message= ${{ modelVariable }}->name." Updated Successfully";
         }else
         {
-            $request=app(StoreRequest::class);
+            $request=app(Store{{ model }}Request::class);
             ${{ modelVariable }}={{model}}::create([
                 "name"=>$request->name,
                 

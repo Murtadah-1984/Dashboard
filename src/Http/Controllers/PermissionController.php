@@ -6,8 +6,8 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Models\Permission;
-use App\Http\Requests\Permission\StoreRequest;
-use App\Http\Requests\Permission\UpdateRequest;
+use App\Http\Requests\Store\StorePermissionRequest;
+use App\Http\Requests\Update\UpdatePermissionRequest;
 use Illuminate\Support\Facades\Gate;
 
 
@@ -76,7 +76,7 @@ class PermissionController extends Controller
 
         if($request->filled('id'))
         {
-            $request=app(UpdateRequest::class);
+            $request=app(UpdatePermissionRequest::class);
             $permission=Permission::find($request->id);
             $permission->update([
                 "key"=>$request->key,
@@ -86,7 +86,7 @@ class PermissionController extends Controller
 
         }
         else{
-            $request=app(StoreRequest::class);
+            $request=app(StorePermissionRequest::class);
             $permission=Permission::create([
                 "key"=>$request->key,
                 "table_name"=>$request->table_name,

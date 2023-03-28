@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Http\Requests\Role;
+namespace App\Http\Requests\Update;
 
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
-class UpdateRequest extends FormRequest
+class UpdateRoleRequest extends FormRequest
 {
     public function authorize()
     {

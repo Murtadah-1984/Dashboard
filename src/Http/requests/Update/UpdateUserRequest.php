@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests\User;
+namespace App\Http\Requests\Update;
 
 
 
@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Gate;
 use Illuminate\Validation\Rule;
 
 
-class UpdateRequest extends FormRequest
+class UpdateUserRequest extends FormRequest
 {
     public function authorize()
     {

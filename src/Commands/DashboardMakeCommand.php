@@ -57,7 +57,8 @@ class DashboardMakeCommand extends Command
         $observer = $this->ask('Do you need observer? yes/no');
         $traitContract = $this->ask('Do you need Trait & Contract? yes/no');
         $model=Str::ucfirst(Str::singular(Str::studly($table)));
-        $controller=Str::remove(' ',str($model)->append('Controller'));
+        $controller=Str::remove(' ',str($model)->append('sController'));
+        $apiController=Str::remove(' ',str($model)->append('sApiController'));
 
         //Create Trait and Contract
         if($traitContract == 'yes')
@@ -87,7 +88,10 @@ class DashboardMakeCommand extends Command
         $this->makeChart($model);
 
         //Create Controller
-        $this->makeController($controller, $model);
+        $this->makeController($apiController,$controller, $model);
+
+        //Create Resources
+        $this->makeResources($model);
 
         //Create Request
         $this->makeRequest($model);
@@ -163,40 +167,39 @@ class DashboardMakeCommand extends Command
         $this->info('Events Generated Successfully');
     }
 
-    public function makeController($controller, $model)
+    public function makeController($apiController,$controller, $model)
     {
         $this->call('make:controller', array_filter([
             'name' => $controller,
             '--model' => $model,
             '--resource' =>true
-        ]));    
+        ]));  
+        
+        $this->call('make:controller', array_filter([
+            'name' => "Api\V1\{$apiController}",
+            '--model' => $model,
+            '--api' =>true
+        ]));
         $this->info('Controller Generated Successfully');
     }
 
-    public function makeResources($model, $table)
+    public function makeResources($model)
     {
         $this->call('make:resource', array_filter([
-            'name' => "{$model}/{$model}Resource"
+            'name' => "{$model}Resource"
         ]));  
         
-        $this->call('make:resource', array_filter([
-            'name' => "{$model}/Show{$model}Resource"
-        ])); 
-
-        $this->call('make:resource', array_filter([
-            'name' => "{$model}/List{$model}Resource"
-        ])); 
         $this->info('Resources Generated Successfully');
     }
 
     public function makeRequest($model)
     {
         $this->call('make:request', [
-            'name' => "{$model}/StoreRequest",
+            'name' => "Store/Store{$model}Request",
         ]);
 
         $this->call('make:request', [
-            'name' => "{$model}/UpdateRequest",
+            'name' => "Update/Update{$model}Request",
         ]);
 
         $this->info('Request Generated Successfully');
@@ -236,9 +239,10 @@ class DashboardMakeCommand extends Command
         $this->info('Trait Generated Successfully');
     }
 
-    public function generateRoutes($controller ,$table)
+    public function generateRoutes($apiController,$controller ,$table)
     { 
         $controllerClass="\App\Http\Controllers\\$controller::class";
+        $apiControllerClass="\App\Http\Controllers\\Api\\V1\\$apiController::class";
         $line0="// $table Routes"."\n";
         $line1="Route::middleware('auth')->group(function () {"."\n";
         $line2="Route::resource('{$table}', {$controllerClass});"."\n";
@@ -246,6 +250,17 @@ class DashboardMakeCommand extends Command
         file_put_contents(
             base_path('routes/web.php'),
             $line0.$line1.$line2.$line3
+            ,
+            FILE_APPEND
+        );
+        $line4="// $table Api Routes"."\n";
+        $line5="Route::group(['prefix' => 'v1', 'as' => 'api.', 'namespace' => 'Api\V1', 'middleware' => ['auth:sanctum']], function () {"."\n";
+        $line6="Route::apiResource('{$table}', {$apiController});"."\n";
+        $line7="});"."\n";
+
+        file_put_contents(
+            base_path('routes/api.php'),
+            $line4.$line5.$line6.$line7
             ,
             FILE_APPEND
         );

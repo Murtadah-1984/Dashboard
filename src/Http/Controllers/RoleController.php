@@ -6,8 +6,8 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Models\Role;
-use App\Http\Requests\Role\StoreRequest;
-use App\Http\Requests\Role\UpdateRequest;
+use App\Http\Requests\Store\StoreRoleRequest;
+use App\Http\Requests\Update\UpdateRoleRequest;
 use Illuminate\Support\Facades\Gate;
 
 
@@ -76,7 +76,7 @@ class RoleController extends Controller
 
         if($request->filled('id'))
         {
-            $request=app(UpdateRequest::class);
+            $request=app(UpdateRoleRequest::class);
             $role=Role::find($request->id);
             $role->update([
                 "name"=>$request->name,
@@ -86,7 +86,7 @@ class RoleController extends Controller
 
         }
         else{
-            $request=app(StoreRequest::class);
+            $request=app(StoreRoleRequest::class);
             $role=Role::create([
                 "name"=>$request->name,
                 "display_name"=>$request->display_name,

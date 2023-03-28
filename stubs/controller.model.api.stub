@@ -1,0 +1,68 @@
+<?php
+
+namespace {{ namespace }};
+
+use {{ namespacedModel }};
+use {{ rootNamespace }}Http\Controllers\DashboardBaseController;
+use {{ namespacedRequests }}
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Response;
+use App\Http\Requests\Store\Store{{ model }}Request;
+use App\Http\Requests\Update\Update{{ model }}Request;
+use App\Http\Resources\{{ model }}\{{ model }}Resource;
+use Illuminate\Support\Facades\Gate;
+
+class {{ class }} extends DashboardBaseController
+{
+    /**
+     * Display a listing of the resource.
+     */
+    public function index()
+    {
+        abort_if(Gate::denies('browse_{{ modelVariable }}s'), 403, response()->json(['message' => 'You are not authorized to browse {{ modelVariable }}s'], 403));
+        return new {{ model }}Resource({{ model }}::withTrashed()->get());
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     */
+    public function store(Store{{ model }}Request $request)
+    {
+        abort_if(Gate::denies('add_{{modelVariable}}s'), 403, response()->json(['message' => 'You are not authorized to add {{modelVariable}}s'], 403));
+        ${{ modelVariable }}= {{ model }}::create($request->all());
+        return (new {{ model }}Resource(${{ modelVariable }}))
+            ->response()
+            ->setStatusCode(Response::HTTP_CREATED);
+    }
+
+    /**
+     * Display the specified resource.
+     */
+    public function show({{ model }} ${{ modelVariable }})
+    {
+        abort_if(Gate::denies('read_{{modelVariable}}s'), 403, response()->json(['message' => 'You are not authorized to read {{modelVariable}}s'], 403));
+        return new {{ model }}Resource(${{ modelVariable }});
+    }
+
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(Update{{ model }}Request  $request, {{ model }} ${{ modelVariable }})
+    {
+        abort_if(Gate::denies('update_{{modelVariable}}s'), 403, response()->json(['message' => 'You are not authorized to update {{modelVariable}}s'], 403));
+        ${{ modelVariable }}->update($request->all());
+        return (new {{ model }}Resource(${{ modelVariable }}))
+            ->response()
+            ->setStatusCode(Response::HTTP_ACCEPTED);
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy({{ model }} ${{ modelVariable }})
+    {
+        abort_if(Gate::denies('delete_{{modelVariable}}s'), 403, response()->json(['message' => 'You are not authorized to delete {{modelVariable}}s'], 403));
+        ${{ modelVariable }}->delete();
+        return response(null, Response::HTTP_NO_CONTENT);
+    }
+}

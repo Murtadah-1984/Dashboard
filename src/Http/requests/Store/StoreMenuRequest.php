@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Http\Requests\Menu;
+namespace App\Http\Requests\Store;
 
 use App\Models\Role;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Foundation\Http\FormRequest;
 use Symfony\Component\HttpFoundation\Response;
 
-class StoreRequest extends FormRequest
+class StoreMenuRequest extends FormRequest
 {
     public function authorize()
     {

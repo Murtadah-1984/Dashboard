@@ -8,8 +8,8 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Models\User;
-use App\Http\Requests\User\StoreRequest;
-use App\Http\Requests\User\UpdateRequest;
+use App\Http\Requests\Store\StoreUserRequest;
+use App\Http\Requests\Update\UpdateUserRequest;
 use Illuminate\Support\Facades\Gate;
 
 
@@ -88,7 +88,7 @@ class UserController extends DashboardBaseController
 
         if($request->filled('id'))
         {
-            $request=app(UpdateRequest::class);
+            $request=app(UpdateUserRequest::class);
             $user=User::find($request->id);
             $user->update([
                 "name"=>$request->name,
@@ -99,7 +99,7 @@ class UserController extends DashboardBaseController
 
         }else
         {
-            $request=app(StoreRequest::class);
+            $request=app(StoreUserRequest::class);
             $user=User::create([
                 "name"=>$request->name,
                 "email"=>$request->email,

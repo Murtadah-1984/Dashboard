@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Http\Requests\Role;
+namespace App\Http\Requests\Store;
 
 use App\Models\Role;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Foundation\Http\FormRequest;
 use Symfony\Component\HttpFoundation\Response;
 
-class StoreRequest extends FormRequest
+class StoreRoleRequest extends FormRequest
 {
     public function authorize()
     {
